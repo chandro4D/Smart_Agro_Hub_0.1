@@ -1,0 +1,33 @@
+
+.slide {
+    color: rgb(44,44,229);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 70vh;
+  }
+  
+  .slide1 {
+    background-image: url(https://i.ibb.co/hD0ZWL8/harley-davidson-ee-TJKC-wz34-unsplash.jpg);
+  }
+  .slide2 {
+    background-image: url(https://i.ibb.co/nggVh7t/hermann-wittekopf-1-Se7rqj6-FQ-unsplash.jpg);
+  }
+  .slide3 {
+    background-image: url(https://i.ibb.co/5TCrzN9/joey-banks-YApi-Wyp0lqo-unsplash.jpg);
+  }
+  .slide4 {
+    background-image: url(https://i.ibb.co/ZLDMJmc/martin-sanchez-ig-SCxty-ORz-Y-unsplash.jpg);
+  }
+  .slide5 {
+    background-image: url(https://i.ibb.co/nggVh7t/hermann-wittekopf-1-Se7rqj6-FQ-unsplash.jpg);
+  }
+  .slide6 {
+    background-image: url(https://i.ibb.co/hD0ZWL8/harley-davidson-ee-TJKC-wz34-unsplash.jpg);
+  }
+  .slide7 {
+    background-image: url(https://i.ibb.co/5TCrzN9/joey-banks-YApi-Wyp0lqo-unsplash.jpg);
+  }

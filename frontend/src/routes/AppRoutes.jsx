@@ -1,0 +1,25 @@
+import React from "react";
+
+import { Routes, Route } from "react-router-dom";
+import Home from "../pages/Home.jsx";
+import Login from "../pages/LogIn/LogIn.jsx";
+import OurShop from "../pages/OurShop/OurShop.jsx";
+import AgriInfo from "../pages/AgriInfo/AgriInfo.jsx";
+import SignUp from "../pages/SignUp/SignUp.jsx";
+import Cart from "../pages/Cart/Cart.jsx";
+
+const AppRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/shop" element={<OurShop></OurShop>} />
+
+      <Route path="/AgriInfo" element={<AgriInfo />} />
+      <Route path="/signup" element={<SignUp></SignUp>} />
+      <Route path="/cartPage" element={<Cart></Cart>} />
+    </Routes>
+  );
+};
+
+export default AppRoutes;
