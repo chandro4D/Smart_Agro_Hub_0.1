@@ -141,25 +141,25 @@ const SignUp = () => {
 
     return (
         <div className="mt-10">
-            <div className="lg:w-[480px] lg:h-[650px] sm:w-[400px] sm:h-[550px] bg-gradient-to-r from-primary to-secondary lg:ml-[500px] sm:ml-0  mb-10 rounded-xl">
+            <div className="lg:w-[450px] lg:h-[650px] sm:w-[400px] sm:h-[550px] bg-gradient-to-r from-primary to-secondary lg:ml-[500px] sm:ml-0  mb-10 rounded-xl">
                 {/* <Helmet>
                     <title>HealthHaven | Register</title>
                 </Helmet> */}
                 <div className=" pt-8">
-                    <h2 className="text-center text-2xl font-bold text-white mb-2 font-serif">WELCOME TO SMART AGRO HUB</h2>
+                    <h2 className="text-center text-2xl font-bold text-white mb-2 font-serif">WELCOME TO <br /> SMART AGRO HUB</h2>
                     <p className="text-center text-xl font-semibold text-black">Register To Your Account </p>
                 </div>
                 <form /* onSubmit={handleRegister} */ className="pt-8 lg:pl-12 sm:pl-0">
-                    <div className=" lg:w-[400px] sm:w-[250px] h-[50px]">
+                    <div className=" lg:w-[350px] sm:w-[250px] h-[50px]">
                         <input className="w-full h-full rounded-lg text-center" type="name" placeholder="Your Name" required name="name" />
                     </div>
                     <br />
-                    <div className=" lg:w-[400px] sm:w-[250px] h-[50px]">
+                    <div className=" lg:w-[350px] sm:w-[250px] h-[50px]">
                         <input className="w-full h-full rounded-lg text-center" type="email" placeholder="Your Email" required name="email" />
                     </div>
                     <br />
                     <div className="flex ">
-                        <div className="w-[400px] " >
+                        <div className="w-[350px] " >
                             <input className="text-black rounded-lg text-center w-full     h-[50px]" placeholder="password" required
                                /* type={showPassword ? "text" : "password"} */ name="password" />
                         </div>
@@ -174,14 +174,14 @@ const SignUp = () => {
 
 
                     <br />
-                    <div className=" lg:w-[400px] sm:w-[250px] h-[50px] ">
+                    <div className=" lg:w-[350px] sm:w-[250px] h-[50px] ">
                         <input className="w-full h-full text-center rounded-lg" type="text" placeholder="Enter Your Photo URL" required name="PhotoURL" />
                     </div>
                     <br />
 
                     
-                    <div className="form-control  ">
-                        <label >
+                    <div className="form-control lg:w-[350px] sm:w-[250px] h-[50px] bg-slate-400">
+                        <label className="lg:w-[350px] sm:w-[250px] h-[50px]">
                            <select 
                            /* value={selectedRole} required  onChange={handleRoleChange} */
                            className="select select-bordered">
@@ -191,13 +191,12 @@ const SignUp = () => {
                                
                            </select>
                            
-                       </label>
-                        
+                       </label>  
                     </div>
 
 
                     <br />
-                    <div className=" lg:w-[400px] sm:w-[250px]]  h-[50px] bg-lime-400 rounded-2xl">
+                    <div className=" lg:w-[350px] sm:w-[250px]]  h-[50px] bg-lime-400 rounded-2xl">
                         <button className="w-full h-full text-white"> Register</button>
                     </div>
                 </form>
