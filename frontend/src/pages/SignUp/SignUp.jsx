@@ -179,19 +179,18 @@ const SignUp = () => {
                     </div>
                     <br />
 
-                    
-                    <div className="form-control lg:w-[350px] sm:w-[250px] h-[50px] bg-slate-400">
-                        <label className="lg:w-[350px] sm:w-[250px] h-[50px]">
+                    <div className=" lg:w-[350px] sm:w-[250px] h-[50px] bg-white rounded-lg">
+                        
                            <select 
                            /* value={selectedRole} required  onChange={handleRoleChange} */
-                           className="select select-bordered">
+                           className="select select-bordered text-center pl-[160px] pt-[7px]">
                                
                                <option className="text-center  text-xl">user</option>
                                <option className="text-center  text-xl">seller</option>
                                
                            </select>
                            
-                       </label>  
+                       
                     </div>
 
 
