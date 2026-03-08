@@ -55,6 +55,15 @@ const SignUp = () => {
             PhotoURL,
             role,
         };
+        if (password.length < 6) {
+            setRegisterError('Password should be at least 6 characters');
+            Swal.fire({
+                icon: "error",
+                text: "Password should be at least 6 characters!",
+
+            });
+            return;
+        }
 
         try {
             const res = await fetch("http://localhost:5000/signup", {
@@ -70,6 +79,7 @@ const SignUp = () => {
             console.log(data);
 
             alert("Account Created Successfully!");
+
             navigate("/");
         } catch (error) {
             console.log(error);
