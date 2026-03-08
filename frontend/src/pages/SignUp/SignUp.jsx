@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useState } from "react";
 // import { useContext, useState } from "react";
 // import { Helmet } from "react-helmet-async";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -13,14 +13,19 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 const SignUp = () => {
 
     // const axiosPublic = useAxiosPublic();
+    const [showPassword, setShowPassword] = useState(false);
+    const [selectedRole, setSelectedRole] = useState("user");
 
+    const handleRoleChange = (e) => {
+        setSelectedRole(e.target.value);
+    };
     // const [showPassword, setShowPassword] = useState(false);
     // const [registerError, setRegisterError] = useState("");
     // const [success, setSuccess] = useState('');
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
-    // const location = useLocation();
+    const location = useLocation();
     // console.log(location);
 
     // const from = location.state?.from?.pathname || "/";
@@ -32,6 +37,44 @@ const SignUp = () => {
     // const handleRoleChange = (event) => {
     //     setSelectedRole(event.target.value);
     // };
+    const handleRegister = async (e) => {
+        e.preventDefault();
+
+        const form = e.target;
+
+        const name = form.name.value;
+        const email = form.email.value;
+        const password = form.password.value;
+        const PhotoURL = form.PhotoURL.value;
+        const role = selectedRole;
+
+        const userInfo = {
+            name,
+            email,
+            password,
+            PhotoURL,
+            role,
+        };
+
+        try {
+            const res = await fetch("http://localhost:5000/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userInfo),
+            });
+
+            const data = await res.json();
+
+            console.log(data);
+
+            alert("Account Created Successfully!");
+            navigate("/");
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     // const handleRegister = e => {
     //     e.preventDefault();
@@ -149,7 +192,7 @@ const SignUp = () => {
                     <h2 className="text-center text-2xl font-bold text-white mb-2 font-serif">WELCOME TO <br /> SMART AGRO HUB</h2>
                     <p className="text-center text-xl font-semibold text-slate-800">Register Your Account </p>
                 </div>
-                <form /* onSubmit={handleRegister} */ className="pt-2 lg:pl-12 sm:pl-0">
+                <form onSubmit={handleRegister} className="pt-2 lg:pl-12 sm:pl-0">
                     <div className=" lg:w-[350px] sm:w-[250px] h-[50px]">
                         <input className="w-full h-full rounded-lg text-center" type="name" placeholder="Your Name" required name="name" />
                     </div>
@@ -161,14 +204,14 @@ const SignUp = () => {
                     <div className="flex ">
                         <div className="w-[350px] " >
                             <input className="text-black rounded-lg text-center w-full     h-[50px]" placeholder="password" required
-                               /* type={showPassword ? "text" : "password"} */ name="password" />
+                                type={showPassword ? "text" : "password"} name="password" />
                         </div>
                         <div className="mt-3  ">
-                            {/* <span className=""  onClick={() => { setShowPassword(!showPassword) }}>
+                            <span className="" onClick={() => { setShowPassword(!showPassword) }}>
                                 {
                                     showPassword ? <FaEyeSlash className="w-10 h-5"></FaEyeSlash> : <FaEye className="w-10 h-5"></FaEye>
                                 }
-                            </span> */}
+                            </span>
                         </div>
                     </div>
 
@@ -180,20 +223,14 @@ const SignUp = () => {
                     <br />
 
                     <div className=" lg:w-[350px] sm:w-[250px] h-[50px] bg-white rounded-lg">
-                        
-                           <select 
-                           /* value={selectedRole} required  onChange={handleRoleChange} */
-                           className="select select-bordered text-center pl-[160px] pt-[7px]">
-                               
-                               <option className="text-center  text-xl">user</option>
-                               <option className="text-center  text-xl">seller</option>
-                               
-                           </select>
-                           
-                       
+
+                        <select value={selectedRole} required onChange={handleRoleChange}
+                            className="select select-bordered text-center pl-[160px] pt-[7px]">
+                            <option className="text-center  text-xl">User</option>
+                            <option className="text-center  text-xl">Seller</option>
+                            <option className="text-center  text-xl">Admin</option>
+                        </select>
                     </div>
-
-
                     <br />
                     <div className=" lg:w-[350px] sm:w-[250px]]  h-[50px] bg-lime-400 rounded-2xl">
                         <button className="w-full h-full text-white"> Register</button>
@@ -205,7 +242,7 @@ const SignUp = () => {
                 {/* {
                     success && <p className="text-green-500 text-center text-xl font-semibold mt-5">{success}</p>
                 } */}
-            
+
                 <div className="flex  ml-[200px] mt-[4px]  ">
                     <div  >
                         <button /* onClick={handleGoogleLogin} */ className=" mr-8    text-center pt-1 "><FcGoogle className="w-10 h-10"></FcGoogle></button>

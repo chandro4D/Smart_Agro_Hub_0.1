@@ -16,7 +16,8 @@ app.get("/", (req, res) => {
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.pirk1d4.mongodb.net/?appName=Cluster0`;
+
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -41,7 +42,7 @@ async function run() {
     // SIGNUP
     app.post("/signup", async (req, res) => {
       try {
-        const { name, email, password } = req.body;
+        const { name, email, password, PhotoURL, role } = req.body;
 
         const existingUser = await usersCollection.findOne({ email });
 
@@ -55,6 +56,8 @@ async function run() {
           name,
           email,
           password: hashedPassword,
+          PhotoURL,
+          role
         };
 
         const result = await usersCollection.insertOne(user);

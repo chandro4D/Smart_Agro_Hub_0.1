@@ -1,5 +1,6 @@
 import React from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+
 // import { Helmet } from "react-helmet-async";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -13,12 +14,48 @@ const LogIn = () => {
     // const axiosPublic = useAxiosPublic();
 
 
-    // const location = useLocation();
+    const location = useLocation();
     // console.log(location);
-    // const navigate = useNavigate();
-    // const from = location.state?.from?.pathname || "/";
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/";
 
+    const handleLogIn = async (e) => {
+        e.preventDefault();
 
+        const form = e.target;
+
+        const email = form.email.value;
+        const password = form.password.value;
+
+        const userInfo = {
+            email,
+            password,
+        };
+
+        try {
+            const res = await fetch("http://localhost:5000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(userInfo),
+            });
+
+            const data = await res.json();
+
+            if (data.token) {
+                localStorage.setItem("token", data.token);
+
+                alert("Login Successful");
+
+                navigate(from, { replace: true });
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     // const handleLogIn = e => {
     //     e.preventDefault();
     //     const email = e.target.email.value;
@@ -89,16 +126,16 @@ const LogIn = () => {
                 </div>
                 <div className="bg-white lg:w-[380px] sm:w-[300px] ml-[25px] rounded-lg mt-[23px]">
                     <p className="text-center text-base font-semibold text-slate-400 pt-3">PLEASE ENTER YOUR YOUR<br />  EMAIL AND  PASSWORD</p>
-                    <form /* onSubmit={handleLogIn} */ className="pt-3 lg:pl-12 sm:pl-0">
+                    <form onSubmit={handleLogIn} className="pt-3 lg:pl-12 sm:pl-0">
                         <div className="mb-4 lg:w-[300px] sm:w-[250px] h-[50px]">
                             <input className="w-full h-full rounded-lg text-center" type="email" placeholder="Enter Your Email" required name="email" />
                         </div>
-                        
+
                         <div className="mb-4 lg:w-[300px] sm:w-[250px] h-[50px] ">
                             <input className="w-full h-full text-center rounded-lg" type="password" placeholder="Enter Your Password" required name="password" />
                         </div>
 
-                        
+
 
                         <div className=" lg:w-[300px] sm:w-[250px] bg-gradient-to-r from-secondary to-primary hover:border-4 h-[50px] rounded-2xl">
                             <button className=" btn btn-outline btn-secondary w-full h-full text-white"> LOGIN</button>
