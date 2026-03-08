@@ -78,7 +78,7 @@ const LogIn = () => {
     // }
     return (
         <div className="mt-10">
-            <div className=" lg:w-[430px] sm:w-[350px] lg:h-[542px] sm:h-[500px] bg-gradient-to-r from-primary to-secondary lg:ml-[550px]  mb-10 rounded-xl sm:ml-[0px]">
+            <div className=" lg:w-[430px] sm:w-[350px] lg:h-[560px] sm:h-[500px] bg-gradient-to-r from-primary to-secondary lg:ml-[550px]  mb-10 rounded-xl sm:ml-[0px]">
                 {/* <Helmet>
                     <title>HealthHaven | Login</title>
                 </Helmet> */}
@@ -87,7 +87,7 @@ const LogIn = () => {
                     <h2 className="text-center text-2xl font-bold text-yellow-50 mb-2 font-serif ">WELCOME BACK <br /> <span className="font-serif  text-pink-400  text-3xl">SMART AGRO HUB</span> </h2>
 
                 </div>
-                <div className="bg-white lg:w-[380px] sm:w-[300px] ml-[25px] rounded-lg mt-[10px]">
+                <div className="bg-white lg:w-[380px] sm:w-[300px] ml-[25px] rounded-lg mt-[23px]">
                     <p className="text-center text-base font-semibold text-slate-400 pt-3">PLEASE ENTER YOUR YOUR<br />  EMAIL AND  PASSWORD</p>
                     <form /* onSubmit={handleLogIn} */ className="pt-3 lg:pl-12 sm:pl-0">
                         <div className="mb-4 lg:w-[300px] sm:w-[250px] h-[50px]">

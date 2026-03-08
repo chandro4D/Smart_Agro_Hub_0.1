@@ -140,16 +140,16 @@ const SignUp = () => {
     // }
 
     return (
-        <div className="mt-10">
-            <div className="lg:w-[450px] lg:h-[650px] sm:w-[400px] sm:h-[550px] bg-gradient-to-r from-primary to-secondary lg:ml-[500px] sm:ml-0  mb-10 rounded-xl">
+        <div className="mt-3">
+            <div className="lg:w-[450px] lg:h-[645px] sm:w-[400px] sm:h-[550px] bg-gradient-to-r from-primary to-secondary lg:ml-[500px] sm:ml-0  mb-10 rounded-xl">
                 {/* <Helmet>
                     <title>HealthHaven | Register</title>
                 </Helmet> */}
-                <div className=" pt-8">
+                <div className=" pt-3">
                     <h2 className="text-center text-2xl font-bold text-white mb-2 font-serif">WELCOME TO <br /> SMART AGRO HUB</h2>
-                    <p className="text-center text-xl font-semibold text-black">Register To Your Account </p>
+                    <p className="text-center text-xl font-semibold text-slate-800">Register Your Account </p>
                 </div>
-                <form /* onSubmit={handleRegister} */ className="pt-8 lg:pl-12 sm:pl-0">
+                <form /* onSubmit={handleRegister} */ className="pt-2 lg:pl-12 sm:pl-0">
                     <div className=" lg:w-[350px] sm:w-[250px] h-[50px]">
                         <input className="w-full h-full rounded-lg text-center" type="name" placeholder="Your Name" required name="name" />
                     </div>
@@ -206,7 +206,7 @@ const SignUp = () => {
                     success && <p className="text-green-500 text-center text-xl font-semibold mt-5">{success}</p>
                 } */}
             
-                <div className="flex  ml-[240px] mt-[4px]  ">
+                <div className="flex  ml-[200px] mt-[4px]  ">
                     <div  >
                         <button /* onClick={handleGoogleLogin} */ className=" mr-8    text-center pt-1 "><FcGoogle className="w-10 h-10"></FcGoogle></button>
                     </div>
