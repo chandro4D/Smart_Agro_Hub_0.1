@@ -1,27 +1,27 @@
 import React from "react";
 import { useState } from "react";
-// import { useContext, useState } from "react";
-// import { Helmet } from "react-helmet-async";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 // import { AuthContext } from "../../Provider/AuthProvider";
 // import useAxiosPublic from "../../Hook/useAxiosPublic";
-
+// import { useContext, useState } from "react";
+// import { Helmet } from "react-helmet-async";
 
 const SignUp = () => {
 
     // const axiosPublic = useAxiosPublic();
+    // const [showPassword, setShowPassword] = useState(false);
+    const [registerError, setRegisterError] = useState("");
+    // const [success, setSuccess] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [selectedRole, setSelectedRole] = useState("user");
 
     const handleRoleChange = (e) => {
         setSelectedRole(e.target.value);
     };
-    // const [showPassword, setShowPassword] = useState(false);
-    // const [registerError, setRegisterError] = useState("");
-    // const [success, setSuccess] = useState('');
+
 
     const navigate = useNavigate();
 
@@ -64,6 +64,26 @@ const SignUp = () => {
             });
             return;
         }
+        else if (!/[A-Z]/.test(password)) {
+            setRegisterError('Your password should have at least one upper case letter');
+
+            Swal.fire({
+                icon: "error",
+                text: "Your password should have at least one upper case letter!",
+
+            });
+            return;
+        }
+        else if (!/[a-z]/.test(password)) {
+            setRegisterError('Your password should have at least one lower case letter');
+            Swal.fire({
+                icon: "error",
+                text: "Your password should have at least one lower case letter!",
+
+            });
+            return;
+        }
+        setRegisterError('');
 
         try {
             const res = await fetch("http://localhost:5000/signup", {
@@ -78,7 +98,11 @@ const SignUp = () => {
 
             console.log(data);
 
-            alert("Account Created Successfully!");
+            Swal.fire({
+                icon: "success",
+                text: "Account Created  successfully!",
+
+            });
 
             navigate("/");
         } catch (error) {

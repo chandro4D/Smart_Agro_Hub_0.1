@@ -5,7 +5,7 @@ import { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 // import { AuthContext } from "../../Provider/AuthProvider";
-// import Swal from "sweetalert2";
+import Swal from "sweetalert2";
 // import useAxiosPublic from "../../Hook/useAxiosPublic";
 
 
@@ -21,9 +21,7 @@ const LogIn = () => {
 
     const handleLogIn = async (e) => {
         e.preventDefault();
-
         const form = e.target;
-
         const email = form.email.value;
         const password = form.password.value;
 
@@ -46,11 +44,18 @@ const LogIn = () => {
             if (data.token) {
                 localStorage.setItem("token", data.token);
 
-                alert("Login Successful");
+                Swal.fire({
+                    icon: "success",
+                    text: "LogIn successfully!",
+                });
 
                 navigate(from, { replace: true });
             } else {
-                alert(data.message);
+                Swal.fire({
+                    icon: "error",
+                    text: "Please Provide Correct Email And Password!",
+
+                });
             }
         } catch (error) {
             console.log(error);
