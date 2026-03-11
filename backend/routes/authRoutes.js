@@ -5,7 +5,15 @@ const User = require("../models/User");
 
 const router = express.Router();
 
-
+// 3. GET API to fetch all products
+app.get("/api/products", async (req, res) => {
+    try {
+        const products = await Product.find(); // fetch all products
+        res.status(200).json({ success: true, data: products });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Failed to fetch products", error: err.message });
+    }
+});
 // SIGNUP
 router.post("/signup", async (req,res)=>{
  try{

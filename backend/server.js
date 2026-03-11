@@ -32,13 +32,46 @@ async function run() {
 
     const database = client.db("smartAgroHub");
     const usersCollection = database.collection("users");
+    const productsCollection = database.collection("allProducts");
 
     // GET ALL USERS
     app.get("/users", async (req, res) => {
       const result = await usersCollection.find().toArray();
       res.send(result);
     });
+    // GET ALL PRODUCTS
+    app.get("/allProducts", async (req, res) => {
+      try {
+        const result = await productsCollection.find().toArray();
+        res.send(result);
+      } catch (error) {
+        res.status(500).send(error);
+      }
+    });
+    // GET SINGLE PRODUCT
+    app.get("/allProducts/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
 
+        const result = await productsCollection.findOne(query);
+
+        res.send(result);
+      } catch (error) {
+        res.status(500).send(error);
+      }
+    });
+    
+    // ADD PRODUCT
+    app.post("/allProducts", async (req, res) => {
+      try {
+        const product = req.body;
+        const result = await productsCollection.insertOne(product);
+        res.send(result);
+      } catch (error) {
+        res.status(500).send(error);
+      }
+    });
     // SIGNUP
     app.post("/signup", async (req, res) => {
       try {
