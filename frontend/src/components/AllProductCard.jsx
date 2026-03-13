@@ -1,12 +1,13 @@
+import React from "react";
 import { ShoppingCart, Eye } from "lucide-react";
 import toast from "react-hot-toast";
 
 function ProductCard({ product }) {
-  const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "";
+  const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5000" : "";
 
   const userString = localStorage.getItem("user");
-  const user = JSON.parse(userString);
-  const user_id = user.id;
+  const user = userString ? JSON.parse(userString) : null;
+  const user_id = user ? user._id : null;
 
   const addToCart = async () => {
     if (!user_id) {
@@ -45,7 +46,7 @@ function ProductCard({ product }) {
         <img
           src={product.image}
           alt={product.name}
-          className="absolute top-0 left-0 w-full h-full object-cover"
+          className="absolute top-0 left-0 w-[300px] h-[250px] object-cover"
         />
       </figure>
 

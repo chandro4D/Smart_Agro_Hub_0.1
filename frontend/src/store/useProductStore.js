@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 // base url will be dynamic depending on the environment
-const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "";
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5000" : "";
 
 export const useProductStore = create((set, get) => ({
   // products state
@@ -98,11 +98,21 @@ export const useProductStore = create((set, get) => ({
   fetchProducts: async () => {
     set({ loading: true });
     try {
-      const response = await axios.get(`${BASE_URL}/api/products`);
-      set({ products: response.data.data, error: null });
+      const response = await axios.get(`${BASE_URL}/allProducts`);
+
+      set({
+        products: response.data,
+        error: null
+      });
+
     } catch (err) {
-      if (err.status == 429) set({ error: "Rate limit exceeded", products: [] });
-      else set({ error: "Something went wrong", products: [] });
+      console.error(err);
+
+      if (err.response?.status === 429) {
+        set({ error: "Rate limit exceeded", products: [] });
+      } else {
+        set({ error: "Something went wrong", products: [] });
+      }
     } finally {
       set({ loading: false });
     }
@@ -204,46 +214,46 @@ export const useProductStore = create((set, get) => ({
       set({ loading: false });
     }
   },
-// Update User Profile
-updateProfile: async (id, updatedData) => {
-  set({ loading: true });
-  try {
-    const token = localStorage.getItem("token"); // or however you store JWT
+  // Update User Profile
+  updateProfile: async (id, updatedData) => {
+    set({ loading: true });
+    try {
+      const token = localStorage.getItem("token"); // or however you store JWT
 
-    if (!token) {
-      toast.error("You are not logged in");
-      set({ loading: false });
-      return;
-    }
-
-    const response = await axios.put(
-      `${BASE_URL}/api/dashboard/updateProfile/${id}`,
-      updatedData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // Send token
-        },
-        withCredentials: true, // If using cookies
+      if (!token) {
+        toast.error("You are not logged in");
+        set({ loading: false });
+        return;
       }
-    );
 
-    toast.success("Profile updated successfully");
+      const response = await axios.put(
+        `${BASE_URL}/api/dashboard/updateProfile/${id}`,
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Send token
+          },
+          withCredentials: true, // If using cookies
+        }
+      );
 
-    // Update user info in Zustand store
-    set((state) => ({
-      currentUser: response.data.data,
-    }));
-  } catch (error) {
-    console.error("Error in updateProfile function", error);
-    if (error.response?.status === 401) {
-      toast.error("Unauthorized: Please log in again.");
-    } else {
-      toast.error("Something went wrong");
+      toast.success("Profile updated successfully");
+
+      // Update user info in Zustand store
+      set((state) => ({
+        currentUser: response.data.data,
+      }));
+    } catch (error) {
+      console.error("Error in updateProfile function", error);
+      if (error.response?.status === 401) {
+        toast.error("Unauthorized: Please log in again.");
+      } else {
+        toast.error("Something went wrong");
+      }
+    } finally {
+      set({ loading: false });
     }
-  } finally {
-    set({ loading: false });
-  }
-},
+  },
 
 
 }));
