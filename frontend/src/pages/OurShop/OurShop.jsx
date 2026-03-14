@@ -15,7 +15,7 @@ function OurShop() {
     <div>
       <div>
         <div>
-          <h1 className='text-center mb-10 mt-24 font-semibold text-5xl  font-mono tracking-widest 
+          <h1 className='text-center mb-10 mt-[60px] font-semibold text-5xl  font-mono tracking-widest 
                   bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary'>SEE ALL PRODUCTS HERE</h1>
         </div>
         {loading ? (
@@ -23,7 +23,7 @@ function OurShop() {
             <div className="loading loading-spinner loading-lg" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ml-[150px] mr-[150px]">
             {products?.map((product) => (
               <AllProductCard key={product._id} product={product} />
             ))}

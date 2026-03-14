@@ -46,25 +46,26 @@ function ProductCard({ product }) {
         <img
           src={product.image}
           alt={product.name}
-          className="absolute top-0 left-0 w-[300px] h-[250px] object-cover"
+          className="absolute top-0 bg-slate-400 ml-[45px] rounded-lg left-0 w-[300px] h-[250px] object-cover"
         />
       </figure>
 
       <div className="card-body">
         {/* PRODUCT INFO */}
         <h2 className="card-title text-lg font-semibold">{product.name}</h2>
-        <p className="text-2xl font-bold text-primary">${Number(product.price).toFixed(2)}</p>
+        <p className="text-base text-slate-400">Hybrid Rice is very popular among farmers for its high yield and disease resistance.</p>
 
         {/* CARD ACTIONS */}
         <div className="card-actions justify-end mt-4">
+          <p className="text-2xl font-bold text-primary">${Number(product.price).toFixed(2)}</p>
           <div onClick={addToCart} className="btn btn-sm btn-primary btn-outline">
-            <ShoppingCart className="size-4" />
+            <ShoppingCart className="size-6" />
           </div>
           {/* <Link to={`/product/${product.id}`} className="btn btn-sm btn-info btn-outline">
             <ShoppingCart className="size-4" />
           </Link> */}
           <div className="btn btn-sm btn-error  btn-outline">
-            <Eye className="size-4" />
+            <Eye className="size-6" />
           </div>
           {/* <button
             className="btn btn-sm btn-error  btn-outline"
