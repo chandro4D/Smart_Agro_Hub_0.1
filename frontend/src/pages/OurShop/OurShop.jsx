@@ -23,7 +23,7 @@ function OurShop() {
             <div className="loading loading-spinner loading-lg" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ml-[150px] mr-[150px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ml-[150px] mr-[150px]">
             {products?.map((product) => (
               <AllProductCard key={product._id} product={product} />
             ))}

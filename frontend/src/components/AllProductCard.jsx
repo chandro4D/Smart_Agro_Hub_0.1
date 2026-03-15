@@ -40,13 +40,13 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className="mt-10  card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+    <div className="mt-10 bg-gradient-to-r from-blue-200 to-blue-300 card  shadow-xl hover:shadow-2xl transition-shadow duration-300">
       {/* PRODUCT IMAGE */}
-      <figure className="relative pt-[56.25%]">
+      <figure className="relative pt-[56.25%] ml-3 mr-3 mt-3 rounded-lg bg-slate-400 w-[260px] h-[190px]">
         <img
           src={product.image}
           alt={product.name}
-          className="absolute top-0 bg-slate-400 ml-[45px] rounded-lg left-0 w-[300px] h-[250px] object-cover"
+          className="absolute top-0   left-0  object-cover"
         />
       </figure>
 
