@@ -1,14 +1,11 @@
 import React from "react";
 import { useContext, useState } from "react";
-
-// import { Helmet } from "react-helmet-async";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-// import { AuthContext } from "../../Provider/AuthProvider";
 import Swal from "sweetalert2";
 // import useAxiosPublic from "../../Hook/useAxiosPublic";
-
-
+// import { Helmet } from "react-helmet-async";
+// import { AuthContext } from "../../Provider/AuthProvider";
 const LogIn = () => {
     // const { signIn, googleLogin } = useContext(AuthContext);
     // const axiosPublic = useAxiosPublic();
@@ -43,7 +40,7 @@ const LogIn = () => {
 
             if (data.token) {
                 localStorage.setItem("token", data.token);
-
+                localStorage.setItem("user", JSON.stringify(data.user));
                 Swal.fire({
                     icon: "success",
                     text: "LogIn successfully!",
@@ -61,33 +58,8 @@ const LogIn = () => {
             console.log(error);
         }
     };
-    // const handleLogIn = e => {
-    //     e.preventDefault();
-    //     const email = e.target.email.value;
-    //     const password = e.target.password.value;
-    //     console.log(email, password);
-    //     signIn(email, password)
-    //         .then(result => {
-    //             console.log(result.user);
-    //             Swal.fire({
-    //                 icon: "success",
-    //                 text: "LogIn successfully!",
 
-    //             });
 
-    //             navigate(from, { replace: true });
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //             Swal.fire({
-    //                 icon: "error",
-    //                 text: "Please Provide Correct Email And Password!",
-
-    //             });
-
-    //         })
-    // }
-    // const role = "user";
     // //--------- Google Login-----------
     // const handleGoogleLogin = e => {
     //     e.preventDefault();
