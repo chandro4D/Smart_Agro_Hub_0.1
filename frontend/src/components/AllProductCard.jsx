@@ -1,6 +1,8 @@
 import React from "react";
 import { ShoppingCart, Eye } from "lucide-react";
+import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 function ProductCard({ product }) {
   const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5000" : "";
@@ -11,27 +13,32 @@ function ProductCard({ product }) {
 
   const addToCart = async () => {
     if (!user_id) {
-      alert("You must be logged in to add items to cart");
+      Swal.fire({
+        icon: "error",
+        text: "You Must Be Logged In To Add Items To The Cart",
+        showConfirmButton: true
+      });
       return;
     }
 
     try {
-      const res = await fetch(`${BASE_URL}/api/products/cart`, {
+      const res = await fetch(`${BASE_URL}/allCartItems`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           user_id,
-          product_id: product.id,
+          product_id: product._id,
           quantity: 1
         }),
       });
 
       const data = await res.json();
 
-      if (!res.ok) {
+      if (!res.ok || !data.success) {
         toast.error(data.message || "Failed to add to cart");
       } else {
-        toast.success("Item added to cart!");
+        toast.success(data.message || "Item added to cart!");
+        window.dispatchEvent(new Event("cartUpdated"));
       }
     } catch (err) {
       console.error(err);
@@ -40,7 +47,7 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className="mt-10 bg-gradient-to-r from-blue-200 to-blue-300 card  shadow-xl hover:shadow-2xl transition-shadow duration-300">
+    <div className="mt-5 bg-gradient-to-r from-blue-200 to-blue-300 card  shadow-xl hover:shadow-2xl transition-shadow duration-300">
       {/* PRODUCT IMAGE */}
       <figure className="relative pt-[56.25%] ml-3 mr-3 mt-3 rounded-lg bg-slate-400 w-[260px] h-[190px]">
         <img

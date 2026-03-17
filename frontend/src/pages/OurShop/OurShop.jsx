@@ -15,7 +15,7 @@ function OurShop() {
     <div>
       <div>
         <div>
-          <h1 className='text-center mb-10 mt-[60px] font-semibold text-5xl  font-mono tracking-widest 
+          <h1 className='text-center mb-5 mt-[60px] font-semibold text-5xl  font-mono tracking-widest 
                   bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary'>SEE ALL PRODUCTS HERE</h1>
         </div>
         {loading ? (

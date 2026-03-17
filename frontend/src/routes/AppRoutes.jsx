@@ -9,6 +9,7 @@ import SignUp from "../pages/SignUp/SignUp.jsx";
 import Cart from "../pages/Cart/Cart.jsx";
 
 const AppRoutes = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -17,7 +18,7 @@ const AppRoutes = () => {
 
       <Route path="/AgriInfo" element={<AgriInfo />} />
       <Route path="/signup" element={<SignUp></SignUp>} />
-      <Route path="/cartPage" element={<Cart></Cart>} />
+      <Route path="/cartPage" element={<Cart user={user} />} />
     </Routes>
   );
 };
