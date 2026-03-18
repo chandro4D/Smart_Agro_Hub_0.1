@@ -17,6 +17,8 @@ const Cart = ({ user }) => {
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Yes, delete it!",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
             cancelButtonText: "Cancel",
         }).then(async (result) => {
             if (result.isConfirmed) {

@@ -110,6 +110,21 @@ async function run() {
       }
     });
 
+    // GET ALL Individual PRODUCTS
+    app.get("/products/:category", async (req, res) => {
+      try {
+        const category = req.params.category;
+
+        const result = await productsCollection
+          .find({ category: category })
+          .toArray();
+
+        res.send(result);
+      } catch (error) {
+        res.status(500).send(error);
+      }
+    });
+
     // ADD TO CART
     app.post("/allCartItems", async (req, res) => {
       try {
