@@ -13,7 +13,7 @@ const CategoryCard = () => {
                     </div>
                 </div>
             </Link>
-            <Link to='/seeds'>
+            <Link to='/cattle'>
                 <div>
                     <p className="py-3 text-center font-semibold font-mono tracking-widest text-2xl 
                     bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Cattle</p>
@@ -22,7 +22,7 @@ const CategoryCard = () => {
                     </div>
                 </div>
             </Link>
-            <Link to='/Tools'>
+            <Link to='/machinery'>
                 <div >
                     <p className="py-3 text-center font-semibold font-mono tracking-widest text-2xl 
                     bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Agri Machinery</p>
@@ -31,7 +31,7 @@ const CategoryCard = () => {
                     </div>
                 </div>
             </Link>
-            <Link to='/Feed'>
+            <Link to='/poultry'>
                 <div className="mt-10">
                     <p className="py-5 text-center font-semibold font-mono tracking-widest text-2xl 
                     bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Poultry </p>
@@ -41,7 +41,7 @@ const CategoryCard = () => {
                 </div>
 
             </Link>
-            <Link to='/Feed'>
+            <Link to='/veterinary'>
                 <div className="mt-10">
                     <p className="py-5 text-center font-semibold font-mono tracking-widest text-2xl 
                     bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Veterinary Supplies Items</p>
@@ -51,7 +51,7 @@ const CategoryCard = () => {
                 </div>
 
             </Link>
-            <Link to='/Feed'>
+            <Link to='/cat'>
                 <div className="mt-10">
                     <p className="py-5 text-center font-semibold font-mono tracking-widest text-2xl 
                     bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Cat Items</p>

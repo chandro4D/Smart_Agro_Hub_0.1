@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../../components/AllProductCard"; 
 
-const Crop = () => {
+const Poultry = () => {
   const [products, setProducts] = useState([]);
 
   const BASE_URL =
@@ -10,7 +10,7 @@ const Crop = () => {
       : "";
 
   useEffect(() => {
-    fetch(`${BASE_URL}/products/crop`) // 👈 only crop category
+    fetch(`${BASE_URL}/products/poultry`) // 👈 only poultry category
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error(err));
@@ -20,7 +20,7 @@ const Crop = () => {
     <div className="mt-10 px-5 ml-[130px] mr-[130px]">
       <h1 className='text-center mb-5 mt-[60px] font-semibold text-5xl  font-mono tracking-widest 
                   bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary'>
-        Crop Products
+        Poultry Products
       </h1>
 
       {/* 🔥 SAME CARD DESIGN GRID */}
@@ -33,4 +33,4 @@ const Crop = () => {
   );
 };
 
-export default Crop;
+export default Poultry;
