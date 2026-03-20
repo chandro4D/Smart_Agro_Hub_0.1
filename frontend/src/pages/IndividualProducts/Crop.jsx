@@ -10,7 +10,7 @@ const Crop = () => {
       : "";
 
   useEffect(() => {
-    fetch(`${BASE_URL}/products/crop`) // 👈 only crop category
+    fetch(`${BASE_URL}/products/crop`) 
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.error(err));
@@ -18,12 +18,12 @@ const Crop = () => {
 
   return (
     <div className="mt-10 px-5 ml-[130px] mr-[130px]">
-      <h1 className='text-center mb-5 mt-[60px] font-semibold text-5xl  font-mono tracking-widest 
+      <h1 className='text-center mb-5 mt-[60px] font-bold text-5xl  font-mono tracking-widest 
                   bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary'>
         Crop Products
       </h1>
 
-      {/* 🔥 SAME CARD DESIGN GRID */}
+    
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
           <ProductCard key={product._id} product={product} />
