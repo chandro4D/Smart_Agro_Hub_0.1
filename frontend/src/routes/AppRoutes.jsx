@@ -13,7 +13,7 @@ import Veterinary from "../pages/IndividualProducts/Veterinary.jsx";
 import Poultry from "../pages/IndividualProducts/Poultry.jsx";
 import Machinery from "../pages/IndividualProducts/Machinery.jsx";
 import Cattle from "../pages/IndividualProducts/Cattle.jsx";
-
+import Dashboard from "../Dashboard/DashboardRoute/Dashboard.jsx";
 const AppRoutes = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   return (
@@ -31,6 +31,8 @@ const AppRoutes = () => {
       <Route path="/cat" element={<Cat></Cat>} />
       <Route path="/veterinary" element={<Veterinary></Veterinary>} />
       <Route path="/cattle" element={<Cattle></Cattle>} />
+      {/* Dashboard */}
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 };
