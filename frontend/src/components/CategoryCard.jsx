@@ -56,7 +56,7 @@ const CategoryCard = () => {
                     <p className="py-5 text-center font-semibold font-mono tracking-widest text-2xl 
                     bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Cat Items</p>
                     <div className="border-4  mr-5  rounded-xl ">
-                        <img className="w-[600px]  h-[200px] rounded-xl" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Cows_eating_TMR.JPG/500px-Cows_eating_TMR.JPG" alt="" />
+                        <img className="w-[600px]  h-[200px] rounded-xl" src="https://cdn.pixabay.com/photo/2016/09/05/21/37/cat-1647775_1280.jpg" alt="" />
                     </div>
                 </div>
 

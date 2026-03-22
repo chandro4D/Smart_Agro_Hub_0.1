@@ -1,13 +1,15 @@
 import React from 'react'
+const User = () => {
+    const userString = localStorage.getItem("user");
+    const user = userString ? JSON.parse(userString) : null;
 
-function User() {
+    const name = user?.name;
+
     return (
         <div>
-            <h2 className='text-2xl text-blue-600 font-semibold'>
-                User Dashboard
-            </h2>
+            <div><h1 className='text-center text-sky-500 text-4xl font-bold ml-32 pt-10 mb-10'>HI,WELCOME {user?.name ? user.name : 'BACK'} </h1></div>
         </div>
-    )
-}
+    );
+};
 
-export default User
+export default User;
