@@ -104,7 +104,7 @@ function Navbar() {
               <>
                 <div className=" items-center mx-5 gap-4 fixed right-[200px] z-[9999]">
                   <div className="indicator">
-                    <div onClick={() => navigate("/cartPage")} className="p-2 rounded-full hover:bg-base-200 transition-colors">
+                    <div onClick={() => navigate("/cart")} className="p-2 rounded-full hover:bg-base-200 transition-colors">
                       <ShoppingBagIcon className="size-7" />
                       <span className="badge badge-sm badge-primary text-white indicator-item mt-2 mr-2 bg-rose-600 pb-2 text-base font-serif font-medium">
                         {cart?.length || 0}

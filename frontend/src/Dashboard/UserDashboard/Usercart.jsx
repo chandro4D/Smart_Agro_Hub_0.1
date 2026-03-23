@@ -1,10 +1,9 @@
 import React from "react";
 import Swal from "sweetalert2";
-import useCart from "../../store/useCart" 
+import useCart from "../../store/useCart"
 import { Link } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
-
-const Cart = ({ user }) => {
+const Usercart = ({ user }) => {
     const [cart, refetch, loading] = useCart(user._id);
 
     const totalPrice = cart.reduce(
@@ -33,7 +32,7 @@ const Cart = ({ user }) => {
                     const data = await res.json();
                     if (res.ok && data.success) {
                         Swal.fire("Deleted!", data.message, "success");
-                        refetch(); 
+                        refetch();
                         window.dispatchEvent(new Event("cartUpdated"));
                     } else {
                         Swal.fire("Error!", data.message || "Failed to delete", "error");
@@ -52,18 +51,18 @@ const Cart = ({ user }) => {
         <div className="pb-20 mt-8">
             {cart.length > 0 ? (
                 <>
-                    <div className="ml-44 rounded-lg h-24 w-[1200px] bg-gradient-to-r from-cyan-500 to-blue-500 mb-10 ">
-                        <h1 className="text-center font-semibold text-lime-400 text-4xl pt-5">
+                    <div className="ml-[110px] rounded-lg h-[90px] w-[1000px] bg-gradient-to-r from-cyan-500 to-blue-500 mb-10 ">
+                        <h1 className="text-center font-semibold text-lime-400 text-4xl pt-[25px]">
                             MY CART
                         </h1>
                     </div>
 
-                    <div className="ml-40 overflow-x-auto mr-[47px]">
+                    <div className="ml-[110px] overflow-x-auto mr-[30px]">
                         <table className="table">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>PRODUCT NAME</th>
+                                    <th>PRODUCT NAME </th>
                                     <th>PRODUCT IMAGE</th>
                                     <th>QTY</th>
                                     <th>UNIT PRICE</th>
@@ -96,9 +95,9 @@ const Cart = ({ user }) => {
                                                         product_id: item.product_id,
                                                     })
                                                 }
-                                                className="btn btn-ghost text-white text-center w-[60px] h-[40px] btn-xl bg-red-500 text-xl"
+                                                className="btn btn-ghost text-white text-center w-[55px] h-[40px] btn-xl bg-red-500 text-xl"
                                             >
-                                            <RiDeleteBin6Line />
+                                                <RiDeleteBin6Line />
                                             </button>
                                         </td>
                                     </tr>
@@ -107,22 +106,22 @@ const Cart = ({ user }) => {
                         </table>
                     </div>
 
-                    <div className="flex justify-between ml-[170px] mr-[145px] my-10">
-                        <h2 className="text-2xl font-semibold">
+                    <div className="flex justify-between ml-[125px] mr-[145px] my-10">
+                        <h2 className="text-2xl font-semibold mr-[70px] ml-[20px]">
                             TOTAL ORDERS : {cart.length}
                         </h2>
                         <Link to="/payment">
                             <button
                                 disabled={!cart.length}
-                                className="btn w-[400px] ml-32 bg-gradient-to-r from-cyan-500 to-blue-500 text-white sm:btn-sm md:btn-md"
+                                className="btn w-[300px] bg-gradient-to-r from-cyan-500 to-blue-500 text-white sm:btn-sm md:btn-md"
                             >
                                 CHECKOUT
                             </button>
                         </Link>
-                        <h2 className="text-2xl font-semibold">
+                        <h2 className="text-2xl font-semibold ml-[70px]">
                             TOTAL PRICE : {totalPrice.toFixed(2)} BDT
                         </h2>
-                        
+
                     </div>
                 </>
             ) : (
@@ -136,4 +135,4 @@ const Cart = ({ user }) => {
     );
 };
 
-export default Cart;
+export default Usercart;

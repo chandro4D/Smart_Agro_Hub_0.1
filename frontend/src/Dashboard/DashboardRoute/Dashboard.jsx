@@ -50,7 +50,7 @@ function Dashboard() {
 
                         <>
                             <li>
-                                <NavLink to="/dashboard/sellerHome"><FaHome></FaHome> Seller Home</NavLink>
+                                <NavLink to="/seller"><FaHome></FaHome> Seller Home</NavLink>
                             </li>
                             <li>
                                 <NavLink to='/dashboard/manageMedicine'><FaCartPlus></FaCartPlus> Manage Medicine</NavLink>
@@ -70,7 +70,7 @@ function Dashboard() {
                                 <NavLink to="/dashboard/user"><FaHome></FaHome> User Home</NavLink>
                             </li>
                             <li>
-                                <NavLink to='/cartPage'><FaCartPlus></FaCartPlus> My cart</NavLink>
+                                <NavLink to='/dashboard/Usercart'><FaCartPlus></FaCartPlus> My cart</NavLink>
                             </li>
                             <li>
                                 <NavLink to='/dashboard/paymentHistory'><FaCartPlus></FaCartPlus> Payment History</NavLink>
