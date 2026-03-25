@@ -67,7 +67,7 @@ const Cart = ({ user }) => {
                                     <th>PRODUCT IMAGE</th>
                                     <th>QTY</th>
                                     <th>UNIT PRICE</th>
-                                    <th>TOTAL PRICE</th>
+                                    <th>PRICE</th>
                                     <th>DELETE</th>
                                 </tr>
                             </thead>

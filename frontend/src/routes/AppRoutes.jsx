@@ -19,6 +19,7 @@ import Usercart from "../Dashboard/UserDashboard/Usercart.jsx";
 import Seller from "../Dashboard/SellerDashboard/Seller.jsx";
 
 import PaymentHistory from "../Dashboard/UserDashboard/paymentHistory.jsx";
+import Payment from "../Dashboard/UserDashboard/Payment.jsx";
 const AppRoutes = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -42,6 +43,8 @@ const AppRoutes = () => {
       <Route path="/Usercart" element={<Usercart user={user} />} />
       <Route path="/seller" element={<Seller />} />
 
+                  {/* payment routes */}
+      <Route path="/payment" element={<Payment user={user} />} />
       {/* ✅ Dashboard with nested routes */}
       <Route path="/dashboard" element={<Dashboard />}>
 

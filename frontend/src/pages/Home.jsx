@@ -12,7 +12,7 @@ function HomePage() {
   return (
     <div >
       <div className="mt-14 ">
-        <div className="ml-[500px] w-[550px] h-[120px] hover:bg-violet-300 pt-2 rounded-xl hover:border-4 border-violet-200 hover:mb-10">
+        <div className="ml-[500px] w-[550px] h-[120px]  hover:bg-violet-300 pt-2 rounded-xl hover:border-4 border-violet-200 hover:mb-10">
           <h1 className='mb-5 text-center font-semibold text-5xl  font-mono tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary'>
             WELCOME TO SMART <br /> AGRO HUB
           </h1>
