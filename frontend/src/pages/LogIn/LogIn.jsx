@@ -91,7 +91,7 @@ const LogIn = () => {
 
     // }
     return (
-        <div className="mt-10">
+        <div className="mt-10 text-black text-lg font-light font-serif">
             <div className=" lg:w-[430px] sm:w-[350px] lg:h-[560px] sm:h-[500px] bg-gradient-to-r from-primary to-secondary lg:ml-[550px]  mb-10 rounded-xl sm:ml-[0px]">
                 {/* <Helmet>
                     <title>HealthHaven | Login</title>
@@ -115,7 +115,7 @@ const LogIn = () => {
 
 
                         <div className=" lg:w-[300px] sm:w-[250px] bg-gradient-to-r from-secondary to-primary hover:border-4 h-[50px] rounded-2xl">
-                            <button className=" btn btn-outline btn-secondary w-full h-full text-white"> LOGIN</button>
+                            <button className=" btn btn-outline btn-secondary w-full  h-full  text-white"> LOGIN</button>
                         </div>
                     </form>
                     <div className="mt-3" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1450">

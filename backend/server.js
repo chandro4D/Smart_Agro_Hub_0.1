@@ -254,6 +254,20 @@ async function run() {
       }
     });
 
+    // For Payment
+                 /* 
+     Store ID: smart69c356bc8aafe
+     Store Password(API / Secret Key): smart69c356bc8aafe @ssl
+     Merchant Panel URL: https://sandbox.sslcommerz.com/manage/ (Credential as you inputted in the time of 
+        registration)
+    Store name: testsmart9ms7
+    Registered URL: www.smartagrohub_0.1.com
+    Session API to generate transaction: https://sandbox.sslcommerz.com/gwprocess/v4/api.php
+    Validation API: https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php
+    Validation API(Web Service) name: https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php
+    You may check our plugins available for multiple carts and libraries: https://github.com/sslcommerz
+
+              */
 
   } finally {
 

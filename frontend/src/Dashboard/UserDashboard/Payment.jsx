@@ -8,16 +8,16 @@ function Payment({ user }) {
         0
     );
     return (
-        <div>
+        <div className='font-serif'>
             <div className='mt-10 mb-[50px]'>
-                <h1 className='text-center text-sky-500 text-4xl font-bold'> Please Make Payment</h1>
+                <h1 className='text-center text-sky-500 text-5xl font-bold'> Please Make Payment</h1>
             </div>
             {cart.length > 0 ? (
                 <div className="ml-[220px] mr-[220px]">
                     <div className="overflow-x-auto ">
                         <table className="table">
                             {/* head */}
-                            <thead className="text-xl text-center mb-4 text-sky-600">
+                            <thead className="text-2xl text-center mb-4 text-sky-600">
                                 <tr>
                                     <th>
                                         Total Orders
@@ -31,7 +31,7 @@ function Payment({ user }) {
                             </thead>
                             <tbody >
 
-                                <tr className=" h-24 text-base text-center font-semibold">
+                                <tr className=" h-24 text-lg text-center font-semibold">
                                     <th>
                                         {cart.length}
                                     </th>
@@ -56,13 +56,15 @@ function Payment({ user }) {
 
                         </table>
                     </div>
-                    <div className="flex justify-center mt-6">
-                        <button className="btn btn-primary">Primary</button>
+
+                    <div className="flex justify-center mt-[30px]  text-2xl">
+                        <button disabled={!cart.length}
+                            className="btn  w-[200px] h-[50px] flex justify-center bg-gradient-to-r from-indigo-800 to-indigo-500 text-white sm:btn-sm md:btn-md"
+                        >
+                            Pay
+                        </button>
+                        
                     </div>
-                    <div className="bg-red-500 text-white p-4">
-                        Tailwind Test
-                    </div>
-                    <button className="test-daisy">Check</button>
                 </div>
             ) : <h1 className='text-center text-2xl mt-10'>No items in cart to make payment</h1>}
 

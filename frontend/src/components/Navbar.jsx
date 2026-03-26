@@ -113,7 +113,7 @@ function Navbar() {
                   </div>
                 </div>
 
-                <div className="tooltip tooltip-bottom mr-5 fixed right-[140px] z-[9999]" data-tip="2">
+                <div className=" mr-5 fixed right-[140px] z-[9999]" data-tip="2">
                   <div className="dropdown dropdown-bottom">
                     <div tabIndex={0} className="m-1">
                       <UserIcon className="hover:text-fuchsia-500 text-4xl rounded-full  w-[35px] h-[35px] " />

@@ -11,8 +11,8 @@ function HomePage() {
 
   return (
     <div >
-      <div className="mt-14 ">
-        <div className="ml-[500px] w-[550px] h-[120px]  hover:bg-violet-300 pt-2 rounded-xl hover:border-4 border-violet-200 hover:mb-10">
+      <div className="mt-[25px]">
+        <div className="  pt-2 rounded-xl text-center">
           <h1 className='mb-5 text-center font-semibold text-5xl  font-mono tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary'>
             WELCOME TO SMART <br /> AGRO HUB
           </h1>
@@ -22,7 +22,7 @@ function HomePage() {
                   bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary'>SEE SOME PRODUCTS</h1> */}
       </div>
       <Slider />
-      <div className="ml-[400px] w-[730px] h-[120px] hover:bg-violet-300 pt-2 rounded-xl hover:border-4 border-violet-200 hover:mb-10">
+      <div className="ml-[400px] w-[730px] h-[120px] pt-2 rounded-xl   ">
         <h1 className='text-center font-semibold text-5xl  font-mono tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-primary mb-10 to-secondary'>
           Smart Farming Product <br />Categories
         </h1>
