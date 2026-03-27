@@ -4,7 +4,7 @@ import User from '../UserDashboard/User';
 import Seller from '../SellerDashboard/Seller';
 import Cart from '../../pages/Cart/Cart';
 import { NavLink, Outlet } from 'react-router-dom';
-import { FaBook, FaCartPlus, FaEnvelope, FaHome, FaList, FaUsers } from "react-icons/fa";
+import { FaBook, FaCartPlus, FaEnvelope, FaHome, FaList, FaUsers, FaUser } from "react-icons/fa";
 import { MdOutlineManageAccounts, MdRestaurantMenu } from "react-icons/md";
 
 function Dashboard() {
@@ -15,10 +15,19 @@ function Dashboard() {
 
     return (
         <div className="flex  ml-0">
-            <div className="w-72 min-h-screen bg-gradient-to-r from-indigo-500  to-pink-500">
+            <div className="w-[280px] min-h-screen bg-gradient-to-r from-indigo-500  to-pink-500">
                 <ul className="menu pl-8  text-white">
+                    {/* {user?.PhotoURL ? (
+                        <img
+                            className="mr-2 border-2 object-cover border-white ml-16 mb-2 w-[80px] h-[80px] rounded-full"
+                            src={user.PhotoURL}
+                            alt={user.name}
+                        />
+                    ) : (
+                        <FaUser className="mr-2 ml-16 mb-2 w-20 h-20 text-white" />
+                    )} */}
                     <div className="pt-8">
-                        <img className="mr-2 ml-16 mb-2 w-[80px] h-[80px] rounded-full" src="../../../../public/default.png" alt="" />
+                        <img className="mr-2 border-4 object-cover border-indigo-400 ml-16 mb-2 w-[80px] h-[80px] rounded-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3A9J0P677Sulx-vF3NY5-T3zdAz_Z5sZZCwhdfhSW8CY3aR8Ng2-TpfU&s" alt="" />
                         <h1 className="text-xl pl-9 mb-3 font-bold">Smart Agro Hub</h1>
                     </div>
                     {role === "Admin" && (

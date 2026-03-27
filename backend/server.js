@@ -10,6 +10,9 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.get("/", (req, res) => {
   res.send("Smart Agro Hub Server Running");
 });
@@ -17,8 +20,6 @@ app.get("/", (req, res) => {
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.pirk1d4.mongodb.net/?appName=Cluster0`;
-
-
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -34,6 +35,8 @@ async function run() {
     const usersCollection = database.collection("users");
     const productsCollection = database.collection("allProducts");
     const cartCollection = database.collection("allCartItems");
+    const allPaymentHistory = database.collection("paymentHistory");
+    const tempPayments = database.collection("tempPayments");
 
 
     // SIGNUP
@@ -253,21 +256,189 @@ async function run() {
         res.status(500).send(error);
       }
     });
+    
+    // GET USER PAYMENT HISTORY
+    app.get("/payment-history/:email", async (req, res) => {
+      try {
+        const email = req.params.email;
 
+        const payments = await allPaymentHistory
+          .find({ email })
+          .sort({ date: -1 })
+          .toArray();
+
+        res.send(payments);
+      } catch (error) {
+        res.status(500).send({ error: "Failed to fetch payment history" });
+      }
+    });
     // For Payment
-                 /* 
-     Store ID: smart69c356bc8aafe
-     Store Password(API / Secret Key): smart69c356bc8aafe @ssl
-     Merchant Panel URL: https://sandbox.sslcommerz.com/manage/ (Credential as you inputted in the time of 
-        registration)
-    Store name: testsmart9ms7
-    Registered URL: www.smartagrohub_0.1.com
-    Session API to generate transaction: https://sandbox.sslcommerz.com/gwprocess/v4/api.php
-    Validation API: https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php
-    Validation API(Web Service) name: https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php
-    You may check our plugins available for multiple carts and libraries: https://github.com/sslcommerz
+    /* 
+        Store ID: smart69c356bc8aafe
+        Store Password(API / Secret Key): smart69c356bc8aafe @ssl
+        Merchant Panel URL: https://sandbox.sslcommerz.com/manage/ (Credential as you inputted in the time of 
+           registration)
+        Store name: testsmart9ms7
+        Registered URL: www.smartagrohub_0.1.com
+        Session API to generate transaction: https://sandbox.sslcommerz.com/gwprocess/v4/api.php
+        Validation API: https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php
+        Validation API(Web Service) name: https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php
+        You may check our plugins available for multiple carts and libraries: https://github.com/sslcommerz
+ */
+    app.post("/ipn-success-payment", async (req, res) => {
+      try {
+        const ipnData = req.body;  // SSLCommerz POSTs JSON
+        console.log("IPN Received:", ipnData);
+        // validate and save payment
+        res.send("IPN Received");
+      } catch (err) {
+        res.status(500).send("IPN Error");
+      }
+    });
 
-              */
+    app.post("/success", async (req, res) => {
+      try {
+        const paymentData = req.body;
+
+        console.log("Payment Successful:", paymentData);
+
+        const trxId = paymentData.tran_id;
+
+        // ✅ GET STORED DATA
+        const savedPayment = await tempPayments.findOne({ trxId });
+
+        // ✅ DELETE USER CART ITEMS
+        if (savedPayment?.cartIds?.length > 0) {
+          const cartObjectIds = savedPayment.cartIds.map(id => new ObjectId(id));
+
+          await cartCollection.deleteMany({
+            _id: { $in: cartObjectIds }
+          });
+
+          console.log("Cart items deleted:", cartObjectIds);
+        } else {
+          console.log("No temp payment found for trxId:", trxId);
+        }
+
+        const paymentRecord = {
+          email: savedPayment?.email || paymentData.cus_email,
+          transactionId: trxId,
+          amount: parseFloat(paymentData.amount || 0),
+          status: paymentData.status,
+          date: new Date(),
+          cartIds: savedPayment?.cartIds || [],
+          productIds: savedPayment?.productIds || [],
+        };
+
+        // ✅ SAVE FINAL PAYMENT
+        await allPaymentHistory.insertOne(paymentRecord);
+
+        // ✅ OPTIONAL: DELETE TEMP DATA
+        await tempPayments.deleteOne({ trxId });
+
+        res.redirect(`http://localhost:5173/dashboard/paymentHistory`);
+        // res.redirect(`http://localhost:5173/success-payment`);
+      } catch (error) {
+        console.error("Success payment error:", error);
+        res.status(500).send("Server Error on success payment");
+      }
+    });
+
+
+    // Payment Initiate
+    app.post("/create-ssl-payment", async (req, res) => {
+      try {
+        const payment = req.body;
+
+        console.log("Payment Info:", payment);
+
+        const trxId = new ObjectId().toString();
+
+        // ✅ SAVE DATA HERE
+        await tempPayments.insertOne({
+          trxId,
+          cartIds: payment.cartIds,
+          productIds: payment.productIds,
+          email: payment.email,
+          amount: payment.price,
+          status: "pending",
+          createdAt: new Date(),
+        });
+        const initiate = {
+          store_id: "smart69c356bc8aafe",
+          store_passwd: "smart69c356bc8aafe@ssl",
+
+          total_amount: payment.price, // no need for template string
+          currency: "BDT",
+          tran_id: trxId,
+
+          success_url: "http://localhost:5000/success",
+          fail_url: "http://localhost:5000/fail",
+          cancel_url: "http://localhost:3030/cancel",
+          ipn_url: "http://localhost:5000/ipn-success-payment",
+
+          shipping_method: "Courier",
+          product_name: "Computer",
+          product_category: "Electronic",
+          product_profile: "general",
+
+          cus_name: "Customer Name",
+          cus_email: payment.email,
+          cus_add1: "Dhaka",
+          cus_add2: "Dhaka",
+          cus_city: "Dhaka",
+          cus_state: "Dhaka",
+          cus_postcode: "1000",
+          cus_country: "Bangladesh",
+          cus_phone: "01711111111",
+
+          ship_name: "Customer Name",
+          ship_add1: "Dhaka",
+          ship_add2: "Dhaka",
+          ship_city: "Dhaka",
+          ship_state: "Dhaka",
+          ship_postcode: "1000",
+          ship_country: "Bangladesh",
+          value_a: trxId,
+        };
+
+        // ✅ Convert to form data
+        const params = new URLSearchParams(initiate);
+
+        // ✅ Call SSLCommerz
+        const sslResponse = await fetch(
+          "https://sandbox.sslcommerz.com/gwprocess/v4/api.php",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: params,
+          }
+        );
+
+        // ✅ Parse JSON response
+        const data = await sslResponse.json();
+
+        console.log("SSLCommerz Response:", data);
+
+        // ❗ Important: send gateway URL to frontend
+        if (data.status === "SUCCESS") {
+          return res.json({
+            url: data.GatewayPageURL,
+            trxId: trxId,
+          });
+        } else {
+          return res.status(400).json({
+            error: data.failedreason || "Payment initiation failed",
+          });
+        }
+
+      } catch (error) {
+        console.error("Payment Error:", error);
+        res.status(500).json({ error: "Server error during payment" });
+      }
+    });
 
   } finally {
 

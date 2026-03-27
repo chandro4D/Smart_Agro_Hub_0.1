@@ -125,9 +125,9 @@ const Usercart = ({ user }) => {
                     </div>
                 </>
             ) : (
-                <div className="pt-40 mb-10">
-                    <h3 className="text-center font-semibold text-pink-600 text-3xl">
-                        YOU HAVEN'T ADDED ANYTHING TO THE CART YET
+                <div className="pt-32 mb-10">
+                    <h3 className="ml-[400px]  font-semibold text-pink-600 text-3xl text-center">
+                        YOU HAVEN'T ADDED ANYTHING <br /> TO THE CART YET
                     </h3>
                 </div>
             )}

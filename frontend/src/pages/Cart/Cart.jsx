@@ -49,7 +49,7 @@ const Cart = ({ user }) => {
     if (loading) return <p>Loading cart...</p>;
 
     return (
-        <div className="pb-20 mt-8">
+        <div className="pb-20 mt-8 font-serif">
             {cart.length > 0 ? (
                 <>
                     <div className="ml-44 rounded-lg h-24 w-[1200px] bg-gradient-to-r from-cyan-500 to-blue-500 mb-10 ">
@@ -128,7 +128,7 @@ const Cart = ({ user }) => {
             ) : (
                 <div className="pt-40 mb-10">
                     <h3 className="text-center font-semibold text-pink-600 text-3xl">
-                        YOU HAVEN'T ADDED ANYTHING TO THE CART YET
+                        YOU HAVEN'T ADDED ANYTHING <br /> <br /> TO THE CART YET
                     </h3>
                 </div>
             )}
