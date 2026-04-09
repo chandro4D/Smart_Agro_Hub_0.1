@@ -1,63 +1,61 @@
 import React from "react";
 import Swal from "sweetalert2";
-import useCart from "../../store/useCart" 
+import useCart from "../../store/useCart";
 import { Link } from "react-router-dom";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 const Cart = ({ user }) => {
-    const [cart, refetch, loading] = useCart(user._id);
+    const [cart, refetch, loading] = useCart(user?._id);
 
-    const totalPrice = cart.reduce(
-        (total, item) => total + item.productDetails.price * item.quantity,
-        0
-    );
-    const removeCartItem = async ({ user_id, product_id }) => {
+    const totalPrice = cart.reduce((total, item) => {
+        const price = Number(item?.productDetails?.price) || 0;
+        const qty = Number(item?.quantity) || 0;
+        return total + price * qty;
+    }, 0);
+
+    const removeCartItem = async (id) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You want to delete this item?",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Yes, delete it!",
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            cancelButtonText: "Cancel",
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     const res = await fetch(
-                        `http://localhost:5000/deleteCartItem/${user_id}/${product_id}`,
-                        {
-                            method: "DELETE",
-                        }
+                        `http://localhost:5000/deleteCartItem/${id}`,
+                        { method: "DELETE" }
                     );
+
                     const data = await res.json();
+
                     if (res.ok && data.success) {
                         Swal.fire("Deleted!", data.message, "success");
-                        refetch(); 
-                        window.dispatchEvent(new Event("cartUpdated"));
+                        refetch();
                     } else {
-                        Swal.fire("Error!", data.message || "Failed to delete", "error");
+                        Swal.fire("Error!", data.message, "error");
                     }
                 } catch (err) {
-                    console.error(err);
                     Swal.fire("Error!", "Server error", "error");
                 }
             }
         });
     };
-    const lineTotal = (item) => item.productDetails?.price * item.quantity;
     if (loading) return <p>Loading cart...</p>;
 
     return (
         <div className="pb-20 mt-8 font-serif">
+
             {cart.length > 0 ? (
                 <>
-                    <div className="ml-44 rounded-lg h-24 w-[1200px] bg-gradient-to-r from-cyan-500 to-blue-500 mb-10 ">
+                    {/* HEADER */}
+                    <div className="ml-44 rounded-lg h-24 w-[1200px] bg-gradient-to-r from-cyan-500 to-blue-500 mb-10">
                         <h1 className="text-center font-semibold text-lime-400 text-4xl pt-5">
                             MY CART
                         </h1>
                     </div>
 
+                    {/* TABLE */}
                     <div className="ml-40 overflow-x-auto mr-[47px]">
                         <table className="table">
                             <thead>
@@ -71,64 +69,77 @@ const Cart = ({ user }) => {
                                     <th>DELETE</th>
                                 </tr>
                             </thead>
+
                             <tbody>
-                                {cart.map((item, index) => (
-                                    <tr key={item._id}>
-                                        <th>{index + 1}</th>
-                                        <td>{item.productDetails?.name}</td>
-                                        <td>
-                                            <img
-                                                src={item.productDetails?.image}
-                                                alt={item.productDetails?.name}
-                                                className="w-16 h-16 object-cover rounded"
-                                            />
-                                        </td>
-                                        <td>{item.quantity}</td>
-                                        <td>{item.productDetails?.price.toFixed(2)} BDT</td>
-                                        <td>
-                                            {(item.productDetails?.price * item.quantity).toFixed(2)} BDT
-                                        </td>
-                                        <td>
-                                            <button
-                                                onClick={() =>
-                                                    removeCartItem({
-                                                        user_id: user._id,
-                                                        product_id: item.product_id,
-                                                    })
-                                                }
-                                                className="btn btn-ghost text-white text-center w-[60px] h-[40px] btn-xl bg-red-500 text-xl"
-                                            >
-                                            <RiDeleteBin6Line />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {cart.map((item, index) => {
+                                    const product = item?.productDetails || {};
+                                    const price = Number(product?.price) || 0;
+                                    const qty = Number(item?.quantity) || 0;
+
+                                    return (
+                                        <tr key={item._id || index}>
+                                            <th>{index + 1}</th>
+
+                                            <td>{product?.name || "No Product"}</td>
+
+                                            <td>
+                                                <img
+                                                    src={
+                                                        product?.image ||
+                                                        "https://via.placeholder.com/100"
+                                                    }
+                                                    alt={product?.name || "product"}
+                                                    className="w-16 h-16 object-cover rounded"
+                                                />
+                                            </td>
+
+                                            <td>{qty}</td>
+
+                                            <td>{price.toFixed(2)} BDT</td>
+
+                                            <td>{(price * qty).toFixed(2)} BDT</td>
+
+                                            <td>
+                                                <button
+                                                    onClick={() =>
+                                                        removeCartItem(item._id)
+                                                    }
+                                                    className="btn btn-ghost text-white w-[60px] h-[40px] bg-red-500 text-xl"
+                                                >
+                                                    <RiDeleteBin6Line />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                     </div>
 
+                    {/* FOOTER */}
                     <div className="flex justify-between ml-[170px] mr-[145px] my-10">
                         <h2 className="text-2xl font-semibold">
-                            TOTAL ORDERS : {cart.length}
+                            TOTAL ORDERS: {cart.length}
                         </h2>
+
                         <Link to="/payment">
                             <button
                                 disabled={!cart.length}
-                                className="btn w-[400px] ml-32 bg-gradient-to-r from-cyan-500 to-blue-500 text-white sm:btn-sm md:btn-md"
+                                className="btn w-[400px] bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
                             >
                                 CHECKOUT
                             </button>
                         </Link>
+
                         <h2 className="text-2xl font-semibold">
-                            TOTAL PRICE : {totalPrice.toFixed(2)} BDT
+                            TOTAL PRICE: {totalPrice.toFixed(2)} BDT
                         </h2>
-                        
                     </div>
                 </>
             ) : (
                 <div className="pt-40 mb-10">
                     <h3 className="text-center font-semibold text-pink-600 text-3xl">
-                        YOU HAVEN'T ADDED ANYTHING <br /> <br /> TO THE CART YET
+                        YOU HAVEN'T ADDED ANYTHING TO THE CART YET
                     </h3>
                 </div>
             )}

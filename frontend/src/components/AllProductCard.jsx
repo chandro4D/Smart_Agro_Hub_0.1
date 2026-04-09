@@ -9,6 +9,7 @@ function ProductCard({ product }) {
 
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;
+
   const user_id = user ? user._id : null;
 
   const addToCart = async () => {
@@ -47,42 +48,40 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className="mt-5 bg-gradient-to-r from-blue-200 to-blue-300 card  shadow-xl hover:shadow-2xl transition-shadow duration-300">
+    <div className="mt-5 card shadow-lg hover:shadow-2xl transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.02] bg-gradient-to-tr from-white via-blue-50 to-blue-100 rounded-xl">
       {/* PRODUCT IMAGE */}
-      <figure className="relative pt-[56.25%] ml-3 mr-3 mt-3 rounded-lg bg-slate-400 w-[260px] h-[190px]">
+      <figure className="relative pt-[56.25%] ml-3 mr-3 mt-3 rounded-lg overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
-          className="absolute top-0   left-0  object-cover"
+          className="absolute top-0 left-0 w-[260px] h-[190px] object-cover transition-transform duration-500 hover:scale-105"
         />
       </figure>
 
       <div className="card-body">
         {/* PRODUCT INFO */}
-        <h2 className="card-title text-lg font-semibold">{product.name}</h2>
-        <p className="text-base text-slate-400">Hybrid Rice is very popular among farmers for its high yield and disease resistance.</p>
+        <h2 className="card-title text-lg font-semibold text-gray-800">{product.name}</h2>
+        <p className="text-base text-gray-500 mt-1">
+          Hybrid Rice is very popular among farmers for its high yield and disease resistance.
+        </p>
 
         {/* CARD ACTIONS */}
-        <div className="card-actions justify-end mt-4">
-          <p className="text-2xl font-bold text-primary">${Number(product.price).toFixed(2)}</p>
-          <div onClick={addToCart} className="btn btn-sm btn-primary btn-outline">
+        <div className="card-actions justify-end mt-4 items-center gap-2">
+          <p className="text-2xl font-bold text-green-600">${Number(product.price).toFixed(2)}</p>
+          <div
+            onClick={addToCart}
+            className="btn btn-sm bg-blue-600 text-white hover:bg-blue-700 border-none transition-all duration-300 shadow hover:shadow-md"
+          >
             <ShoppingCart className="size-6" />
           </div>
-          {/* <Link to={`/product/${product.id}`} className="btn btn-sm btn-info btn-outline">
-            <ShoppingCart className="size-4" />
-          </Link> */}
-          <div className="btn btn-sm btn-error  btn-outline">
+          <div className="btn btn-sm bg-gray-200 text-gray-700 hover:bg-gray-300 border-none transition-all duration-300 shadow hover:shadow-md">
             <Eye className="size-6" />
           </div>
-          {/* <button
-            className="btn btn-sm btn-error  btn-outline"
-            onClick={() => deleteProduct(product.id)}
-          >
-            <Eye className="size-4" />
-          </button> */}
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }
+
 export default ProductCard;

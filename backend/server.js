@@ -159,13 +159,13 @@ async function run() {
             message: "Cart updated successfully",
           });
         }
-
         const cartItem = {
           user_id: new ObjectId(user_id),
           product_id: new ObjectId(product_id),
           quantity: quantity || 1,
           createdAt: new Date(),
         };
+
 
         await cartCollection.insertOne(cartItem);
 
@@ -182,6 +182,7 @@ async function run() {
       }
     });
 
+
     // GET USER CART ITEMS
     app.get("/allCartItems/:user_id", async (req, res) => {
       try {
@@ -189,6 +190,11 @@ async function run() {
 
         const result = await cartCollection.aggregate([
           { $match: { user_id: new ObjectId(user_id) } },
+          {
+            $addFields: {
+              product_id: { $toString: "$product_id" } // convert ObjectId → string
+            }
+          },
           {
             $lookup: {
               from: "allProducts",
@@ -208,13 +214,14 @@ async function run() {
     });
 
     // REMOVE CART ITEM
-    app.delete("/deleteCartItem/:user_id/:product_id", async (req, res) => {
+    app.delete("/deleteCartItem/:id", async (req, res) => {
       try {
-        const { user_id, product_id } = req.params;
+        const id = req.params.id;
+
         const result = await cartCollection.deleteOne({
-          user_id: new ObjectId(user_id),
-          product_id: new ObjectId(product_id),
+          _id: new ObjectId(id),
         });
+
         if (result.deletedCount > 0) {
           res.status(200).json({ success: true, message: "Item deleted" });
         } else {
@@ -224,6 +231,18 @@ async function run() {
         console.error(err);
         res.status(500).json({ success: false, message: "Server error" });
       }
+    });
+    // for show payment
+    app.get("/payment-details/:trxId", async (req, res) => {
+      const trxId = req.params.trxId;
+
+      const payment = await allPaymentHistory.findOne({ transactionId: trxId });
+
+      const products = await productsCollection.find({
+        _id: { $in: payment.productIds.map(id => new ObjectId(id)) }
+      }).toArray();
+
+      res.send({ payment, products });
     });
 
     // GET ALL USERS
@@ -256,7 +275,7 @@ async function run() {
         res.status(500).send(error);
       }
     });
-    
+
     // GET USER PAYMENT HISTORY
     app.get("/payment-history/:email", async (req, res) => {
       try {

@@ -29,6 +29,14 @@ const useCart = (user_id) => {
 
     useEffect(() => {
         fetchCart();
+
+        const handleUpdate = () => fetchCart();
+
+        window.addEventListener("cartUpdated", handleUpdate);
+
+        return () => {
+            window.removeEventListener("cartUpdated", handleUpdate);
+        };
     }, [user_id]);
 
     return [cart, fetchCart, loading];

@@ -6,10 +6,12 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 const Usercart = ({ user }) => {
     const [cart, refetch, loading] = useCart(user._id);
 
-    const totalPrice = cart.reduce(
-        (total, item) => total + item.productDetails.price * item.quantity,
-        0
-    );
+
+    const totalPrice = cart.reduce((total, item) => {
+        const price = item?.productDetails?.price || 0;
+        return total + price * (item.quantity || 0);
+    }, 0);
+
     const removeCartItem = async ({ user_id, product_id }) => {
         Swal.fire({
             title: "Are you sure?",

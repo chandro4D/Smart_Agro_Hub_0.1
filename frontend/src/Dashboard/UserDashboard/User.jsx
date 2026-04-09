@@ -91,15 +91,15 @@ const User = () => {
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+            <div className="grid text-black grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                 <StatCard icon={<FaShoppingCart />} label="Cart Items" value={cart?.length || 0} color="green-500" />
-                <StatCard icon={<FaHistory />} label="Total Payments" value={recentPayments.reduce((sum, p) => sum + p.amount, 0)} color="yellow-500" />
+                <StatCard icon={<FaHistory />} label="Total Payments" value={recentPayments.reduce((sum, p) => sum + p.amount, 0)} color="pink-500" />
                 <StatCard icon={<FaHeart />} label="Wishlist" value={stats.wishlistItems} color="pink-500" />
-                <StatCard icon={<FaBoxOpen />} label="Total Orders" value={stats.paymentHistory} color="blue-500" />
+                <StatCard icon={<FaBoxOpen />} label="Total Orders" value={stats.paymentHistory} color="green-500" />
             </div>
 
             {/* Recent Activities */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid text-black grid-cols-1 md:grid-cols-2 gap-6">
                 <ActivityCard title="Recent Payments" data={recentPayments} type="payment" />
                 <ActivityCard title="Recent Cart Items" data={recentCartItems} type="cart" />
             </div>
