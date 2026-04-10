@@ -1,5 +1,5 @@
 import React from 'react';
-import Admin from '../AdminDashboard/Admin';
+import Admin from '../AdminDashboard/AdminHome';
 import User from '../UserDashboard/User';
 import Seller from '../SellerDashboard/Seller';
 import Cart from '../../pages/Cart/Cart';

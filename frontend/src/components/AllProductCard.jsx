@@ -48,19 +48,19 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className="mt-5 card shadow-lg hover:shadow-2xl transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.02] bg-gradient-to-tr from-white via-blue-50 to-blue-100 rounded-xl">
+    <div className="mt-5 card shadow-lg hover:shadow-2xl transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.05] bg-gradient-to-tr from-white via-blue-50 to-blue-100 rounded-xl">
       {/* PRODUCT IMAGE */}
-      <figure className="relative pt-[56.25%] ml-3 mr-3 mt-3 rounded-lg overflow-hidden">
+      <figure className="relative border-[1px] border-green-600 pt-[56.25%] ml-3 mr-3 mt-3 rounded-lg overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
-          className="absolute top-0 left-0 w-[260px] h-[190px] object-cover transition-transform duration-500 hover:scale-105"
+          className="absolute top-0 left-0 w-[260px] h-[190px] object-cover transition-transform duration-500 hover:scale-110"
         />
       </figure>
 
       <div className="card-body">
         {/* PRODUCT INFO */}
-        <h2 className="card-title text-lg font-semibold text-gray-800">{product.name}</h2>
+        <h2 className="card-title text-lg font-semibold text-green-600">{product.name}</h2>
         <p className="text-base text-gray-500 mt-1">
           Hybrid Rice is very popular among farmers for its high yield and disease resistance.
         </p>
