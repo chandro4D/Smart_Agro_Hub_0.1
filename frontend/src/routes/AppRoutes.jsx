@@ -24,6 +24,7 @@ import Payment from "../Dashboard/UserDashboard/Payment.jsx";
 
 // For Admin Dashboard
 import AdminHome from "../Dashboard/AdminDashboard/AdminHome.jsx";
+import ManageUsers from "../Dashboard/AdminDashboard/ManageUsers.jsx";
 
 const AppRoutes = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -65,6 +66,7 @@ const AppRoutes = () => {
 
         {/* ADMIN */}
         <Route path="adminHome" element={<AdminHome />} />
+        <Route path="manageUsers" element={<ManageUsers />} />
 
       </Route>
 

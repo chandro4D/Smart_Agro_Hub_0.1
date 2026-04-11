@@ -37,7 +37,7 @@ function Dashboard() {
                                 <NavLink to="/dashboard/adminHome"><FaHome></FaHome> ADMIN HOME</NavLink>
                             </li>
                             <li>
-                                <NavLink to="/dashboard/allUsers"> <FaUsers />MANAGE USERS</NavLink>
+                                <NavLink to="/dashboard/manageUsers"> <FaUsers />MANAGE USERS</NavLink>
                             </li>
                             <li>
                                 <NavLink to="/dashboard/addItems"><MdOutlineManageAccounts />MANAGE CATEGORY</NavLink>
