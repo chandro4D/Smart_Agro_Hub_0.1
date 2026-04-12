@@ -11,7 +11,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Smart Agro Hub Server Running");
@@ -38,6 +37,38 @@ async function run() {
     const allPaymentHistory = database.collection("paymentHistory");
     const tempPayments = database.collection("tempPayments");
 
+
+    // verify Token 
+    // const verifyToken = (req, res, next) => {
+    //   const authHeader = req.headers.authorization;
+
+    //   if (!authHeader) {
+    //     return res.status(401).send({ message: "Unauthorized" });
+    //   }
+
+    //   const token = authHeader.split(" ")[1];
+
+    //   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    //     if (err) {
+    //       return res.status(403).send({ message: "Forbidden" });
+    //     }
+
+    //     req.user = decoded;
+    //     next();
+    //   });
+    // };
+    // Verify Admin
+    // const verifyAdmin = async (req, res, next) => {
+    //   const user = await usersCollection.findOne({
+    //     _id: new ObjectId(req.user.id),
+    //   });
+
+    //   if (!user || user.role !== "admin") {
+    //     return res.status(403).send({ message: "Admin only access" });
+    //   }
+
+    //   next();
+    // };
 
     // SIGNUP
     app.post("/signup", async (req, res) => {
@@ -456,6 +487,59 @@ async function run() {
       } catch (error) {
         console.error("Payment Error:", error);
         res.status(500).json({ error: "Server error during payment" });
+      }
+    });
+
+    // Make Admin Route
+    app.patch("/users/admin/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+
+        const result = await usersCollection.updateOne(
+          { _id: new ObjectId(id) },
+          { $set: { role: "admin" } }
+        );
+
+        res.send({
+          success: true,
+          message: "User promoted to admin",
+          result,
+        });
+      } catch (error) {
+        res.status(500).send({ error: "Failed to update role" });
+      }
+    });
+    // UPDATE USER ROLE
+    app.patch("/users/role/:id", async (req, res) => {
+      const id = req.params.id;
+      const { role } = req.body;
+
+      const result = await usersCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { role } }
+      );
+
+      res.send(result);
+    });
+    // Delete User Route
+    app.delete("/users/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+
+        const result = await usersCollection.deleteOne({
+          _id: new ObjectId(id),
+        });
+
+        if (result.deletedCount === 0) {
+          return res.status(404).send({ message: "User not found" });
+        }
+
+        res.send({
+          success: true,
+          message: "User deleted successfully",
+        });
+      } catch (error) {
+        res.status(500).send({ error: "Failed to delete user" });
       }
     });
 
