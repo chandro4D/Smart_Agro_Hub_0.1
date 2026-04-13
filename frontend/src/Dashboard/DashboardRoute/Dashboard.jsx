@@ -31,27 +31,66 @@ function Dashboard() {
                         <h1 className="text-xl pl-9 mb-3 font-bold">Smart Agro Hub</h1>
                     </div>
                     {role === "Admin" && (
-
                         <>
                             <li>
-                                <NavLink to="/dashboard/adminHome"><FaHome></FaHome> ADMIN HOME</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/dashboard/manageUsers"> <FaUsers />MANAGE USERS</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/dashboard/addItems"><MdOutlineManageAccounts />MANAGE CATEGORY</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/dashboard/paymentManagement"><FaList></FaList> PAYMENT MANAGEMENT</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/dashboard/adminSalesReport "> <FaBook></FaBook> SALES REPORT</NavLink>
-                            </li>
-                            <li>
-                                <NavLink to="/dashboard/adminManageBanner "> <FaBook></FaBook> MANAGE BANNER</NavLink>
+                                <NavLink to="/dashboard/adminHome">
+                                    <FaHome /> Dashboard
+                                </NavLink>
                             </li>
 
+                            <li>
+                                <NavLink to="/dashboard/adminAnalytics">
+                                    <FaList /> Analytics
+                                </NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink to="/dashboard/manageUsers">
+                                    <FaUsers /> Manage Users
+                                </NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink to="/dashboard/manageProducts">
+                                    <FaCartPlus /> Manage Products
+                                </NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink to="/dashboard/manageCategory">
+                                    <MdOutlineManageAccounts /> Manage Categories
+                                </NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink to="/dashboard/orders">
+                                    <FaList /> Orders & Payments
+                                </NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink to="/dashboard/adminSalesReport">
+                                    <FaBook /> Sales Report
+                                </NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink to="/dashboard/adminManageBanner">
+                                    <FaBook /> Content Management
+                                </NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink to="/dashboard/notifications">
+                                    <FaEnvelope /> Notifications
+                                </NavLink>
+                            </li>
+
+                            <li>
+                                <NavLink to="/dashboard/settings">
+                                    <MdOutlineManageAccounts /> Settings
+                                </NavLink>
+                            </li>
                         </>
                     )}
 

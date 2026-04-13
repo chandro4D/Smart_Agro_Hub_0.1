@@ -25,6 +25,15 @@ import Payment from "../Dashboard/UserDashboard/Payment.jsx";
 // For Admin Dashboard
 import AdminHome from "../Dashboard/AdminDashboard/AdminHome.jsx";
 import ManageUsers from "../Dashboard/AdminDashboard/ManageUsers.jsx";
+import AdminAnalytics from "../Dashboard/AdminDashboard/AdminAnalytics.jsx";
+import ManageProducts from "../Dashboard/AdminDashboard/ManageProducts.jsx";
+import ManageCategory from "../Dashboard/AdminDashboard/ManageCategory.jsx";
+import Orders from "../Dashboard/AdminDashboard/Orders.jsx";
+import SalesReport from "../Dashboard/AdminDashboard/SalesReport.jsx";
+import ManageBanner from "../Dashboard/AdminDashboard/ManageBanner.jsx";
+import Notifications from "../Dashboard/AdminDashboard/Notifications.jsx";
+import Settings from "../Dashboard/AdminDashboard/Settings.jsx";
+
 
 const AppRoutes = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -67,6 +76,14 @@ const AppRoutes = () => {
         {/* ADMIN */}
         <Route path="adminHome" element={<AdminHome />} />
         <Route path="manageUsers" element={<ManageUsers />} />
+        <Route path="adminAnalytics" element={<AdminAnalytics />} />
+        <Route path="manageProducts" element={<ManageProducts />} />
+        <Route path="manageCategory" element={<ManageCategory />} />
+        <Route path="orders" element={<Orders />} />
+        <Route path="adminSalesReport" element={<SalesReport />} />
+        <Route path="adminManageBanner" element={<ManageBanner />} />
+        <Route path="notifications" element={<Notifications />} />
+        <Route path="settings" element={<Settings />} />
 
       </Route>
 
