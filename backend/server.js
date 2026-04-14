@@ -489,7 +489,20 @@ async function run() {
         res.status(500).json({ error: "Server error during payment" });
       }
     });
+    // All Payments
+    app.get("/all-payments", async (req, res) => {
+      try {
+        const result = await allPaymentHistory
+          .find()
+          .sort({ date: -1 })
+          .toArray();
 
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ error: "Failed to fetch payments" });
+      }
+    });
+    
     // Make Admin Route
     app.patch("/users/admin/:id", async (req, res) => {
       try {
