@@ -502,7 +502,7 @@ async function run() {
         res.status(500).send({ error: "Failed to fetch payments" });
       }
     });
-    
+
     // Make Admin Route
     app.patch("/users/admin/:id", async (req, res) => {
       try {
@@ -553,6 +553,66 @@ async function run() {
         });
       } catch (error) {
         res.status(500).send({ error: "Failed to delete user" });
+      }
+    });
+    // DELETE PRODUCT
+    app.delete("/allProducts/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+
+        const result = await productsCollection.deleteOne({
+          _id: new ObjectId(id),
+        });
+
+        if (result.deletedCount > 0) {
+          res.send({
+            success: true,
+            message: "Product deleted successfully",
+          });
+        } else {
+          res.status(404).send({
+            success: false,
+            message: "Product not found",
+          });
+        }
+      } catch (error) {
+        res.status(500).send({
+          success: false,
+          message: "Failed to delete product",
+        });
+      }
+    });
+
+    // UPDATE PRODUCT
+    app.patch("/allProducts/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+        const updatedData = req.body;
+
+        const result = await productsCollection.updateOne(
+          { _id: new ObjectId(id) },
+          {
+            $set: {
+              name: updatedData.name,
+              category: updatedData.category,
+              price: updatedData.price,
+              stock: updatedData.stock,
+              image: updatedData.image,
+              description: updatedData.description,
+            },
+          }
+        );
+
+        res.send({
+          success: true,
+          message: "Product updated successfully",
+          result,
+        });
+      } catch (error) {
+        res.status(500).send({
+          success: false,
+          message: "Failed to update product",
+        });
       }
     });
 
