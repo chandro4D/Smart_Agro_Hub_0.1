@@ -36,6 +36,7 @@ async function run() {
     const cartCollection = database.collection("allCartItems");
     const allPaymentHistory = database.collection("paymentHistory");
     const tempPayments = database.collection("tempPayments");
+    const categoriesCollection = database.collection("categories");
 
 
     // verify Token 
@@ -613,6 +614,90 @@ async function run() {
           success: false,
           message: "Failed to update product",
         });
+      }
+    });
+                    // Admin product category management
+    // GET ALL CATEGORIES
+    app.get("/categories", async (req, res) => {
+      try {
+        const result = await categoriesCollection.find().toArray();
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ error: "Failed to fetch categories" });
+      }
+    });
+
+    // ADD CATEGORY
+    app.post("/categories", async (req, res) => {
+      try {
+        const category = req.body;
+
+        const exists = await categoriesCollection.findOne({
+          slug: category.slug,
+        });
+
+        if (exists) {
+          return res.status(400).send({
+            success: false,
+            message: "Category already exists",
+          });
+        }
+
+        category.createdAt = new Date();
+
+        const result = await categoriesCollection.insertOne(category);
+
+        res.send({
+          success: true,
+          insertedId: result.insertedId,
+        });
+      } catch (error) {
+        res.status(500).send({ error: "Failed to add category" });
+      }
+    });
+
+    // UPDATE CATEGORY
+    app.patch("/categories/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+        const updated = req.body;
+
+        const result = await categoriesCollection.updateOne(
+          { _id: new ObjectId(id) },
+          {
+            $set: {
+              name: updated.name,
+              slug: updated.slug,
+              image: updated.image,
+              description: updated.description,
+            },
+          }
+        );
+
+        res.send({
+          success: true,
+          result,
+        });
+      } catch (error) {
+        res.status(500).send({ error: "Failed to update category" });
+      }
+    });
+
+    // DELETE CATEGORY
+    app.delete("/categories/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+
+        const result = await categoriesCollection.deleteOne({
+          _id: new ObjectId(id),
+        });
+
+        res.send({
+          success: true,
+          result,
+        });
+      } catch (error) {
+        res.status(500).send({ error: "Failed to delete category" });
       }
     });
 
