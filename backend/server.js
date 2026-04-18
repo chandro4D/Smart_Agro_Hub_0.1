@@ -700,6 +700,26 @@ async function run() {
         res.status(500).send({ error: "Failed to delete category" });
       }
     });
+// UPDATE PAYMENT STATUS (ADMIN)
+app.patch("/payments/status/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { status } = req.body;
+
+    const result = await allPaymentHistory.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { status } }
+    );
+
+    res.send({
+      success: true,
+      message: "Payment status updated",
+      result,
+    });
+  } catch (error) {
+    res.status(500).send({ error: "Failed to update status" });
+  }
+});
 
   } finally {
 

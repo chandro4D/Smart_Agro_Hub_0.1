@@ -33,6 +33,8 @@ import SalesReport from "../Dashboard/AdminDashboard/SalesReport.jsx";
 import ManageBanner from "../Dashboard/AdminDashboard/ManageBanner.jsx";
 import Notifications from "../Dashboard/AdminDashboard/Notifications.jsx";
 import Settings from "../Dashboard/AdminDashboard/Settings.jsx";
+import OrderDetails from "../Dashboard/AdminDashboard/OrderDetails";
+
 
 
 const AppRoutes = () => {
@@ -40,7 +42,6 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-
       {/* PUBLIC */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
@@ -84,7 +85,7 @@ const AppRoutes = () => {
         <Route path="adminManageBanner" element={<ManageBanner />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="settings" element={<Settings />} />
-
+        <Route path="order/:trxId" element={<OrderDetails />} />
       </Route>
 
     </Routes>
