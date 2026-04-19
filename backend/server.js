@@ -37,6 +37,7 @@ async function run() {
     const allPaymentHistory = database.collection("paymentHistory");
     const tempPayments = database.collection("tempPayments");
     const categoriesCollection = database.collection("categories");
+    const notificationsCollection = database.collection("notifications");
 
 
     // verify Token 
