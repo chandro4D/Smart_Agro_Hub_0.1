@@ -29,7 +29,6 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-
     const database = client.db("smartAgroHub");
     const usersCollection = database.collection("users");
     const productsCollection = database.collection("allProducts");
@@ -39,8 +38,7 @@ async function run() {
     const categoriesCollection = database.collection("categories");
     const notificationsCollection = database.collection("notifications");
 
-
-    // verify Token 
+    // verify Token
     // const verifyToken = (req, res, next) => {
     //   const authHeader = req.headers.authorization;
 
@@ -90,13 +88,18 @@ async function run() {
           email,
           password: hashedPassword,
           PhotoURL,
-          role
+          role,
         };
 
         const result = await usersCollection.insertOne(user);
+        await notificationsCollection.insertOne({
+          message: `New user registered: ${email}`,
+          type: "user",
+          createdAt: new Date(),
+          read: false,
+        });
 
         res.send({ message: "User registered successfully", result });
-
       } catch (error) {
         res.status(500).send(error);
       }
@@ -105,7 +108,6 @@ async function run() {
     // LOGIN
     app.post("/login", async (req, res) => {
       try {
-
         const { email, password } = req.body;
 
         const user = await usersCollection.findOne({ email });
@@ -120,18 +122,15 @@ async function run() {
           return res.status(400).send({ message: "Invalid password" });
         }
 
-        const token = jwt.sign(
-          { id: user._id },
-          process.env.JWT_SECRET,
-          { expiresIn: "1d" }
-        );
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+          expiresIn: "1d",
+        });
 
         res.send({
           message: "Login successful",
           token,
-          user
+          user,
         });
-
       } catch (error) {
         res.status(500).send(error);
       }
@@ -182,9 +181,12 @@ async function run() {
           const updatedQuantity = existingItem.quantity + (quantity || 1);
 
           await cartCollection.updateOne(
-            { user_id: new ObjectId(user_id), product_id: new ObjectId(product_id) },
+            {
+              user_id: new ObjectId(user_id),
+              product_id: new ObjectId(product_id),
+            },
             { $inc: { quantity: quantity || 1 } },
-            { upsert: true }
+            { upsert: true },
           );
 
           return res.status(200).json({
@@ -199,14 +201,12 @@ async function run() {
           createdAt: new Date(),
         };
 
-
         await cartCollection.insertOne(cartItem);
 
         res.status(201).json({
           success: true,
           message: "Item added to cart",
         });
-
       } catch (error) {
         res.status(500).json({
           success: false,
@@ -215,29 +215,30 @@ async function run() {
       }
     });
 
-
     // GET USER CART ITEMS
     app.get("/allCartItems/:user_id", async (req, res) => {
       try {
         const user_id = req.params.user_id;
 
-        const result = await cartCollection.aggregate([
-          { $match: { user_id: new ObjectId(user_id) } },
-          {
-            $addFields: {
-              product_id: { $toString: "$product_id" } // convert ObjectId → string
-            }
-          },
-          {
-            $lookup: {
-              from: "allProducts",
-              localField: "product_id",
-              foreignField: "_id",
-              as: "productDetails"
-            }
-          },
-          { $unwind: "$productDetails" }
-        ]).toArray();
+        const result = await cartCollection
+          .aggregate([
+            { $match: { user_id: new ObjectId(user_id) } },
+            {
+              $addFields: {
+                product_id: { $toString: "$product_id" }, // convert ObjectId → string
+              },
+            },
+            {
+              $lookup: {
+                from: "allProducts",
+                localField: "product_id",
+                foreignField: "_id",
+                as: "productDetails",
+              },
+            },
+            { $unwind: "$productDetails" },
+          ])
+          .toArray();
 
         res.status(200).json({ success: true, data: result });
       } catch (error) {
@@ -271,9 +272,11 @@ async function run() {
 
       const payment = await allPaymentHistory.findOne({ transactionId: trxId });
 
-      const products = await productsCollection.find({
-        _id: { $in: payment.productIds.map(id => new ObjectId(id)) }
-      }).toArray();
+      const products = await productsCollection
+        .find({
+          _id: { $in: payment.productIds.map((id) => new ObjectId(id)) },
+        })
+        .toArray();
 
       res.send({ payment, products });
     });
@@ -303,6 +306,12 @@ async function run() {
       try {
         const product = req.body;
         const result = await productsCollection.insertOne(product);
+        await notificationsCollection.insertOne({
+          message: `New product added: ${product.name}`,
+          type: "product",
+          createdAt: new Date(),
+          read: false,
+        });
         res.send(result);
       } catch (error) {
         res.status(500).send(error);
@@ -339,7 +348,7 @@ async function run() {
  */
     app.post("/ipn-success-payment", async (req, res) => {
       try {
-        const ipnData = req.body;  // SSLCommerz POSTs JSON
+        const ipnData = req.body; // SSLCommerz POSTs JSON
         console.log("IPN Received:", ipnData);
         // validate and save payment
         res.send("IPN Received");
@@ -361,10 +370,12 @@ async function run() {
 
         // ✅ DELETE USER CART ITEMS
         if (savedPayment?.cartIds?.length > 0) {
-          const cartObjectIds = savedPayment.cartIds.map(id => new ObjectId(id));
+          const cartObjectIds = savedPayment.cartIds.map(
+            (id) => new ObjectId(id),
+          );
 
           await cartCollection.deleteMany({
-            _id: { $in: cartObjectIds }
+            _id: { $in: cartObjectIds },
           });
 
           console.log("Cart items deleted:", cartObjectIds);
@@ -384,6 +395,12 @@ async function run() {
 
         // ✅ SAVE FINAL PAYMENT
         await allPaymentHistory.insertOne(paymentRecord);
+        await notificationsCollection.insertOne({
+          message: `New payment from ${paymentRecord.email} - ৳${paymentRecord.amount}`,
+          type: "payment",
+          createdAt: new Date(),
+          read: false,
+        });
 
         // ✅ OPTIONAL: DELETE TEMP DATA
         await tempPayments.deleteOne({ trxId });
@@ -395,7 +412,6 @@ async function run() {
         res.status(500).send("Server Error on success payment");
       }
     });
-
 
     // Payment Initiate
     app.post("/create-ssl-payment", async (req, res) => {
@@ -466,7 +482,7 @@ async function run() {
               "Content-Type": "application/x-www-form-urlencoded",
             },
             body: params,
-          }
+          },
         );
 
         // ✅ Parse JSON response
@@ -485,7 +501,6 @@ async function run() {
             error: data.failedreason || "Payment initiation failed",
           });
         }
-
       } catch (error) {
         console.error("Payment Error:", error);
         res.status(500).json({ error: "Server error during payment" });
@@ -512,7 +527,7 @@ async function run() {
 
         const result = await usersCollection.updateOne(
           { _id: new ObjectId(id) },
-          { $set: { role: "admin" } }
+          { $set: { role: "admin" } },
         );
 
         res.send({
@@ -531,7 +546,7 @@ async function run() {
 
       const result = await usersCollection.updateOne(
         { _id: new ObjectId(id) },
-        { $set: { role } }
+        { $set: { role } },
       );
 
       res.send(result);
@@ -602,7 +617,7 @@ async function run() {
               image: updatedData.image,
               description: updatedData.description,
             },
-          }
+          },
         );
 
         res.send({
@@ -617,7 +632,7 @@ async function run() {
         });
       }
     });
-                    // Admin product category management
+    // Admin product category management
     // GET ALL CATEGORIES
     app.get("/categories", async (req, res) => {
       try {
@@ -672,7 +687,7 @@ async function run() {
               image: updated.image,
               description: updated.description,
             },
-          }
+          },
         );
 
         res.send({
@@ -701,29 +716,62 @@ async function run() {
         res.status(500).send({ error: "Failed to delete category" });
       }
     });
-// UPDATE PAYMENT STATUS (ADMIN)
-app.patch("/payments/status/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const { status } = req.body;
+    // UPDATE PAYMENT STATUS (ADMIN)
+    app.patch("/payments/status/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+        const { status } = req.body;
 
-    const result = await allPaymentHistory.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: { status } }
-    );
+        const result = await allPaymentHistory.updateOne(
+          { _id: new ObjectId(id) },
+          { $set: { status } },
+        );
 
-    res.send({
-      success: true,
-      message: "Payment status updated",
-      result,
+        res.send({
+          success: true,
+          message: "Payment status updated",
+          result,
+        });
+      } catch (error) {
+        res.status(500).send({ error: "Failed to update status" });
+      }
     });
-  } catch (error) {
-    res.status(500).send({ error: "Failed to update status" });
-  }
-});
 
+    app.get("/notifications", async (req, res) => {
+      try {
+        const result = await notificationsCollection
+          .find()
+          .sort({ createdAt: -1 })
+          .toArray();
+
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({ error: "Failed to fetch notifications" });
+      }
+    });
+    app.patch("/notifications/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+
+        const result = await notificationsCollection.updateOne(
+          { _id: new ObjectId(id) },
+          { $set: { read: true } },
+        );
+
+        res.send({
+          success: true,
+          message: "Notification marked as read",
+          result,
+        });
+      } catch (error) {
+        res.status(500).send({
+          success: false,
+          error: "Failed to update notification",
+        });
+      }
+    });
+    
   } finally {
-
   }
 }
 

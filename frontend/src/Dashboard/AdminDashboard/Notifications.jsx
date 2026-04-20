@@ -2,70 +2,73 @@ import React, { useEffect, useState } from "react";
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // GET NOTIFICATIONS
   useEffect(() => {
-    fetchNotifications();
+    fetch("http://localhost:5000/notifications")
+      .then((res) => res.json())
+      .then((data) => {
+        setNotifications(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching notifications:", err);
+        setLoading(false);
+      });
   }, []);
 
-  const fetchNotifications = async () => {
+  // MARK AS READ
+  const markAsRead = async (id) => {
     try {
-      const [paymentsRes, usersRes] = await Promise.all([
-        fetch("http://localhost:5000/all-payments"),
-        fetch("http://localhost:5000/users"),
-      ]);
+      await fetch(`http://localhost:5000/notifications/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-      const payments = await paymentsRes.json();
-      const users = await usersRes.json();
-
-      const paymentNotifications = payments.slice(0, 5).map((p) => ({
-        id: p._id,
-        message: `💳 New payment from ${p.email} - ৳${p.amount}`,
-        time: new Date(p.date).toLocaleString(),
-        type: "payment",
-      }));
-
-      const userNotifications = users.slice(0, 5).map((u) => ({
-        id: u._id,
-        message: `👤 New user registered: ${u.email}`,
-        time: "Recently",
-        type: "user",
-      }));
-
-      setNotifications([...paymentNotifications, ...userNotifications]);
+      setNotifications((prev) =>
+        prev.map((n) => (n._id === id ? { ...n, read: true } : n)),
+      );
     } catch (error) {
-      console.error("Error fetching notifications:", error);
+      console.error("Error updating notification:", error);
     }
   };
 
+  if (loading) {
+    return <p className="p-6">Loading notifications...</p>;
+  }
+
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-gray-700 mb-6">
-        🔔 Admin Notifications
-      </h1>
+      <h1 className="text-2xl font-bold mb-6">🔔 Notifications</h1>
 
       <div className="space-y-4">
         {notifications.length === 0 ? (
-          <p className="text-gray-500">No notifications available</p>
+          <p>No notifications found</p>
         ) : (
           notifications.map((n) => (
             <div
-              key={n.id}
-              className="p-4 bg-white rounded-xl shadow border flex justify-between items-center"
+              key={n._id}
+              className={`p-4 rounded-xl shadow border ${
+                n.read ? "bg-gray-100" : "bg-white"
+              }`}
             >
-              <div>
-                <p className="text-gray-800 font-medium">{n.message}</p>
-                <p className="text-sm text-gray-500">{n.time}</p>
-              </div>
+              <p className="font-medium">{n.message}</p>
 
-              <span
-                className={`px-3 py-1 text-xs rounded-full ${
-                  n.type === "payment"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-blue-100 text-blue-600"
-                }`}
-              >
-                {n.type}
-              </span>
+              <p className="text-sm text-gray-500">
+                {new Date(n.createdAt).toLocaleString()}
+              </p>
+
+              {!n.read && (
+                <button
+                  onClick={() => markAsRead(n._id)}
+                  className="mt-2 text-sm text-blue-600"
+                >
+                  Mark as read
+                </button>
+              )}
             </div>
           ))
         )}
