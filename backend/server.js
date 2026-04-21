@@ -770,7 +770,43 @@ async function run() {
         });
       }
     });
-    
+    // For server Settings
+    app.patch("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const { name, PhotoURL } = req.body;
+
+      const result = await usersCollection.updateOne(
+        { _id: new ObjectId(id) },
+        {
+          $set: { name, PhotoURL },
+        },
+      );
+
+      res.send({ success: true, result });
+    });
+    app.patch("/change-password/:id", async (req, res) => {
+      const id = req.params.id;
+      const { oldPassword, newPassword } = req.body;
+
+      const user = await usersCollection.findOne({
+        _id: new ObjectId(id),
+      });
+
+      const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+      if (!isMatch) {
+        return res.send({ success: false, message: "Old password incorrect" });
+      }
+
+      const hashed = await bcrypt.hash(newPassword, 10);
+
+      await usersCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { password: hashed } },
+      );
+
+      res.send({ success: true });
+    });
   } finally {
   }
 }
