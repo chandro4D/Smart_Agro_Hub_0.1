@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useResolvedPath } from "react-router-dom";
+import { Link, NavLink, useResolvedPath } from "react-router-dom";
 import { LogOutIcon, ShoppingBagIcon, ShoppingCartIcon } from "lucide-react";
 import Swal from "sweetalert2";
 import { UserIcon } from "lucide-react";
@@ -121,7 +121,7 @@ function Navbar() {
                     </div>
                     <ul tabIndex={5} className="dropdown-content text-black w-44 z-[1] menu p-4 shadow bg-gradient-to-r from-cyan-500 to-blue-500 rounded-box">
                       <li className="font-semibold">
-                        <Link to="/updateProfile">Update Profile</Link>
+                        <Link to="/dashboard/settings">Update Profile</Link>
                       </li>
                       <li className="font-semibold">
                         <Link to="/dashboard">Dashboard</Link>
