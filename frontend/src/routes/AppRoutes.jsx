@@ -34,6 +34,10 @@ import ManageBanner from "../Dashboard/AdminDashboard/ManageBanner.jsx";
 import Notifications from "../Dashboard/AdminDashboard/Notifications.jsx";
 import Settings from "../Dashboard/AdminDashboard/Settings.jsx";
 import OrderDetails from "../Dashboard/AdminDashboard/OrderDetails";
+import Wishlist from "../Dashboard/UserDashboard/Wishlist.jsx";
+import Profile from "../Dashboard/UserDashboard/Profile.jsx";
+import Support from "../Dashboard/UserDashboard/Support.jsx";
+import Address from "../Dashboard/UserDashboard/Address.jsx";
 
 
 
@@ -73,6 +77,10 @@ const AppRoutes = () => {
         <Route path="user" element={<User />} />
         <Route path="Usercart" element={<Usercart user={user} />} />
         <Route path="paymentHistory" element={<PaymentHistory />} />
+        <Route path="wishlist" element={<Wishlist />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="address" element={<Address />} />
+        <Route path="support" element={<Support />} />
 
         {/* ADMIN */}
         <Route path="adminHome" element={<AdminHome />} />

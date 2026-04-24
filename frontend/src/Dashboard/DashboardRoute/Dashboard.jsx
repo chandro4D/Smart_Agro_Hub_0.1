@@ -164,7 +164,7 @@ function Dashboard() {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/cart">
+                <NavLink to="/dashboard/Usercart">
                   <FaCartPlus /> My Cart
                 </NavLink>
               </li>
