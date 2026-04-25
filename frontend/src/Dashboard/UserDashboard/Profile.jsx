@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
 
-function Profile() {
+const Profile = () => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -14,148 +16,187 @@ function Profile() {
     newPassword: "",
   });
 
-  const userId = localStorage.getItem("userId");
+  const storedUser = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    fetch(`http://localhost:5000/users`)
-      .then((res) => res.json())
-      .then((data) => {
-        const currentUser = data.find((u) => u._id === userId);
-        setUser(currentUser);
-        setFormData({
-          name: currentUser?.name || "",
-          PhotoURL: currentUser?.PhotoURL || "",
-        });
-        setLoading(false);
+    if (storedUser) {
+      setUser(storedUser);
+      setFormData({
+        name: storedUser.name || "",
+        PhotoURL: storedUser.PhotoURL || "",
       });
-  }, [userId]);
+    }
+  }, []);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
+  // UPDATE PROFILE
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const res = await fetch(`http://localhost:5000/users/${userId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-    const data = await res.json();
-    if (data.success) alert("Profile updated");
+    setLoading(true);
+
+    try {
+      await axios.patch(`http://localhost:5000/users/${user._id}`, formData);
+
+      const updatedUser = { ...user, ...formData };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      setUser(updatedUser);
+
+      Swal.fire("Success", "Profile updated", "success");
+    } catch {
+      Swal.fire("Error", "Update failed", "error");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  // CHANGE PASSWORD
   const handlePasswordChange = async (e) => {
     e.preventDefault();
-    const res = await fetch(`http://localhost:5000/change-password/${userId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(passwordData),
-    });
-    const data = await res.json();
-    alert(data.success ? "Password changed" : data.message);
+
+    if (!passwordData.oldPassword || !passwordData.newPassword) {
+      return Swal.fire("Warning", "Fill all fields", "warning");
+    }
+
+    try {
+      const res = await axios.patch(
+        `http://localhost:5000/change-password/${user._id}`,
+        passwordData,
+      );
+
+      if (res.data.success) {
+        Swal.fire("Success", "Password changed", "success");
+        setPasswordData({ oldPassword: "", newPassword: "" });
+      } else {
+        Swal.fire("Error", res.data.message, "error");
+      }
+    } catch {
+      Swal.fire("Error", "Something went wrong", "error");
+    }
   };
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (!user) {
+    return <p className="text-center mt-20">Loading...</p>;
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-100 to-green-50 p-6 w-[1250px]">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
-        {/* LEFT SIDE PROFILE CARD */}
-        <div className="bg-white/70 backdrop-blur-lg shadow-xl rounded-3xl p-6 text-center border">
+    <div className="w-[1250px] mx-auto p-6 space-y-6">
+      {/* ===== HEADER ===== */}
+      <div className=" border-b pb-4">
+        <div className="text-center">
+          <h1 className="text-3xl font-semibold text-white">
+            Account Settings
+          </h1>
+          <p className="text-sm text-gray-500">
+            Manage your personal information and security
+          </p>
+        </div>
+      </div>
+
+      {/* ===== USER SUMMARY ===== */}
+      <div className="grid grid-cols-1 items-center justify-between border-b pb-4 mt-[40px]">
+        <div className=" bg-gray-400 border rounded-xl text-center p-6   gap-6 mb-[20px]">
+          {/* Avatar */}
           <img
-            src={user?.PhotoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
-            alt="profile"
-            className="w-28 h-28 mx-auto rounded-full border-4 border-green-400 object-cover"
+            src={user.PhotoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
+            alt="Profile"
+            className="w-20 h-20 rounded-full object-cover border ml-[530px]"
           />
 
-          <h2 className="text-2xl font-bold mt-4">{user?.name}</h2>
-          <p className="text-gray-500">{user?.email}</p>
+          {/* Info */}
+          <div className="flex-1">
+            <h2 className="text-lg font-semibold text-gray-800">{user.name}</h2>
+            <p className="text-sm text-gray-500">{user.email}</p>
 
-          <span className="inline-block mt-2 px-3 py-1 text-sm bg-green-200 text-green-700 rounded-full capitalize">
-            {user?.role}
-          </span>
-
-          <div className="mt-6 text-sm text-gray-400">Account Active ✅</div>
+            <div className="mt-2 flex gap-2 ml-[530px]">
+              <span className="text-xs bg-gray-100 px-2 py-1 rounded">
+                {user.role}
+              </span>
+              <span className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded">
+                Active
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* RIGHT SIDE FORMS */}
-        <div className="md:col-span-2 space-y-6">
+        {/* ===== FORMS ===== */}
+        <div className="grid md:grid-cols-2 gap-6">
           {/* EDIT PROFILE */}
-          <div className="bg-white shadow-lg rounded-3xl p-6 border">
-            <h2 className="text-xl font-semibold mb-4 text-green-600">
-              Edit Profile
+          <form
+            onSubmit={handleUpdate}
+            className="bg-white border rounded-xl p-6 space-y-4"
+          >
+            <h2 className="font-semibold text-gray-700">
+              Personal Information
             </h2>
 
-            <form onSubmit={handleUpdate}>
-              <div className="grid md:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Full Name"
-                  className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
+            <input
+              type="text"
+              placeholder="Full Name"
+              className="w-full border p-3 rounded focus:ring-1 focus:ring-green-400 outline-none"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+            />
 
-                <input
-                  type="text"
-                  name="PhotoURL"
-                  value={formData.PhotoURL}
-                  onChange={handleChange}
-                  placeholder="Photo URL"
-                  className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-green-400"
-                />
-              </div>
+            <input
+              type="text"
+              placeholder="Photo URL"
+              className="w-full border p-3 rounded focus:ring-1 focus:ring-green-400 outline-none"
+              value={formData.PhotoURL}
+              onChange={(e) =>
+                setFormData({ ...formData, PhotoURL: e.target.value })
+              }
+            />
 
-              <button className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl transition">
-                Update Profile
-              </button>
-            </form>
-          </div>
+            <button
+              disabled={loading}
+              className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+            >
+              {loading ? "Saving..." : "Save Changes"}
+            </button>
+          </form>
 
-          {/* CHANGE PASSWORD */}
-          <div className="bg-white shadow-lg rounded-3xl p-6 border">
-            <h2 className="text-xl font-semibold mb-4 text-red-500">
+          {/* SECURITY */}
+          <form
+            onSubmit={handlePasswordChange}
+            className="bg-white border rounded-xl p-6 space-y-4"
+          >
+            <h2 className="font-semibold text-gray-700">Security</h2>
+
+            <input
+              type="password"
+              placeholder="Old Password"
+              className="w-full border p-3 rounded focus:ring-1 focus:ring-red-400 outline-none"
+              value={passwordData.oldPassword}
+              onChange={(e) =>
+                setPasswordData({
+                  ...passwordData,
+                  oldPassword: e.target.value,
+                })
+              }
+            />
+
+            <input
+              type="password"
+              placeholder="New Password"
+              className="w-full border p-3 rounded focus:ring-1 focus:ring-red-400 outline-none"
+              value={passwordData.newPassword}
+              onChange={(e) =>
+                setPasswordData({
+                  ...passwordData,
+                  newPassword: e.target.value,
+                })
+              }
+            />
+
+            <button className="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600">
               Change Password
-            </h2>
-
-            <form onSubmit={handlePasswordChange}>
-              <div className="grid md:grid-cols-2 gap-4">
-                <input
-                  type="password"
-                  placeholder="Old Password"
-                  onChange={(e) =>
-                    setPasswordData({
-                      ...passwordData,
-                      oldPassword: e.target.value,
-                    })
-                  }
-                  className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400"
-                />
-
-                <input
-                  type="password"
-                  placeholder="New Password"
-                  onChange={(e) =>
-                    setPasswordData({
-                      ...passwordData,
-                      newPassword: e.target.value,
-                    })
-                  }
-                  className="p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400"
-                />
-              </div>
-
-              <button className="mt-4 w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl transition">
-                Change Password
-              </button>
-            </form>
-          </div>
+            </button>
+          </form>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Profile;
