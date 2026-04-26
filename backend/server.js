@@ -37,6 +37,7 @@ async function run() {
     const tempPayments = database.collection("tempPayments");
     const categoriesCollection = database.collection("categories");
     const notificationsCollection = database.collection("notifications");
+    const addressCollection = database.collection("addresses");
 
     // verify Token
     // const verifyToken = (req, res, next) => {
@@ -806,6 +807,42 @@ async function run() {
       );
 
       res.send({ success: true });
+    });
+    // For User Dashboard Address section
+    // GET user addresses
+    app.get("/addresses/:userId", async (req, res) => {
+      const result = await addressCollection
+        .find({ userId: req.params.userId })
+        .toArray();
+      res.send(result);
+    });
+
+    // ADD address
+    app.post("/addresses", async (req, res) => {
+      const data = req.body;
+      const result = await addressCollection.insertOne(data);
+      res.send(result);
+    });
+
+    // UPDATE address
+    app.patch("/addresses/:id", async (req, res) => {
+      const id = req.params.id;
+      const updated = req.body;
+
+      const result = await addressCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: updated },
+      );
+
+      res.send(result);
+    });
+
+    // DELETE address
+    app.delete("/addresses/:id", async (req, res) => {
+      const result = await addressCollection.deleteOne({
+        _id: new ObjectId(req.params.id),
+      });
+      res.send(result);
     });
   } finally {
   }

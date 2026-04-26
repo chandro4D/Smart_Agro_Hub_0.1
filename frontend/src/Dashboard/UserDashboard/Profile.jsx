@@ -92,19 +92,19 @@ const Profile = () => {
       </div>
 
       {/* ===== USER SUMMARY ===== */}
-      <div className="grid grid-cols-1 items-center justify-between border-b pb-4 mt-[40px]">
+      <div className="grid grid-cols-1 items-center justify-between  pb-4 mt-[40px]">
         <div className=" bg-gray-400 border rounded-xl text-center p-6   gap-6 mb-[20px]">
           {/* Avatar */}
           <img
             src={user.PhotoURL || "https://i.ibb.co/4pDNDk1/avatar.png"}
             alt="Profile"
-            className="w-20 h-20 rounded-full object-cover border ml-[530px]"
+            className="w-[110px] bg-white h-[110px] pb-[15px] rounded-full object-cover border ml-[530px]"
           />
 
           {/* Info */}
           <div className="flex-1">
-            <h2 className="text-lg font-semibold text-gray-800">{user.name}</h2>
-            <p className="text-sm text-gray-500">{user.email}</p>
+            <h2 className="text-2xl font-semibold text-gray-800">{user.name}</h2>
+            <p className="text-lg text-gray-500">{user.email}</p>
 
             <div className="mt-2 flex gap-2 ml-[530px]">
               <span className="text-xs bg-gray-100 px-2 py-1 rounded">
