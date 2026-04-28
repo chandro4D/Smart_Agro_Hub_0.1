@@ -177,8 +177,8 @@ const SignUp = () => {
                         <select value={selectedRole} required onChange={handleRoleChange}
                             className="lg:w-[350px] sm:w-[250px] h-[50px] select select-bordered text-center pl-[160px]">
                             <option className="text-center  text-xl">User</option>
-                            <option className="text-center  text-xl">Seller</option>
-                            <option className="text-center  text-xl">Admin</option>
+                            {/* <option className="text-center  text-xl">Seller</option>
+                            <option className="text-center  text-xl">Admin</option> */}
                         </select>
                     </div>
                     <div className=" lg:w-[350px] sm:w-[250px]]  h-[50px] bg-lime-400 rounded-2xl">
