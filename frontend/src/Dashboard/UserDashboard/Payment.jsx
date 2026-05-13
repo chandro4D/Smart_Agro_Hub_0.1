@@ -20,7 +20,7 @@
 //         };
 
 //         try {
-//             const res = await fetch("http://localhost:5000/create-ssl-payment", {
+//             const res = await fetch(`${import.meta.env.VITE_API_URL}/create-ssl-payment`, {
 //                 method: "POST",
 //                 headers: {
 //                     "Content-Type": "application/json",
@@ -140,7 +140,7 @@ function Payment({ user }) {
         };
 
         try {
-            const res = await fetch("http://localhost:5000/create-ssl-payment", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/create-ssl-payment`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payment),

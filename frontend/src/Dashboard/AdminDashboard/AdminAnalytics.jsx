@@ -6,15 +6,15 @@ function AdminAnalytics() {
   const [payments, setPayments] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/users")
+    fetch(`${import.meta.env.VITE_API_URL}/users`)
       .then((res) => res.json())
       .then(setUsers);
 
-    fetch("http://localhost:5000/allProducts")
+    fetch(`${import.meta.env.VITE_API_URL}/allProducts`)
       .then((res) => res.json())
       .then(setProducts);
 
-    fetch("http://localhost:5000/all-payments")
+    fetch(`${import.meta.env.VITE_API_URL}/all-payments`)
       .then((res) => res.json())
       .then(setPayments);
   }, []);

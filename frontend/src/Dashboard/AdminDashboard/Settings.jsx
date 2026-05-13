@@ -29,7 +29,7 @@ function Settings() {
     e.preventDefault();
 
     try {
-      const res = await fetch(`http://localhost:5000/users/${user._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/${user._id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -53,7 +53,7 @@ function Settings() {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/change-password/${user._id}`,
+        `${import.meta.env.VITE_API_URL}/change-password/${user._id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

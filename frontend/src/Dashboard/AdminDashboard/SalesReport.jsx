@@ -8,7 +8,7 @@ function SalesReport() {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/all-payments");
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/all-payments`);
         setPayments(res.data);
         setLoading(false);
       } catch (error) {

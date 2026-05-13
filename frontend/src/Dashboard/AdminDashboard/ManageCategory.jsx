@@ -63,7 +63,7 @@ function ManageCategory() {
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState(null);
 
-  const baseURL = "http://localhost:5000";
+  const baseURL = import.meta.env.VITE_API_URL;
 
   // ------------------------------------------
   // Fetch Categories

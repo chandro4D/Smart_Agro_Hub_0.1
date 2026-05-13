@@ -5,7 +5,7 @@ const CategoryCard = () => {
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:5000/categories")
+        fetch(`${import.meta.env.VITE_API_URL}/categories`)
             .then((res) => res.json())
             .then((data) => setCategories(data))
             .catch((error) => console.log(error));

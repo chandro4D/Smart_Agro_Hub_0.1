@@ -8,7 +8,7 @@ function ManageUsers() {
     const [loading, setLoading] = useState(true);
 
     const fetchUsers = () => {
-        fetch("http://localhost:5000/users")
+        fetch(`${import.meta.env.VITE_API_URL}/users`)
             .then((res) => res.json())
             .then((data) => {
                 setUsers(data);
@@ -32,7 +32,7 @@ function ManageUsers() {
     });
 
     const handleRoleChange = (id, newRole) => {
-        fetch(`http://localhost:5000/users/role/${id}`, {
+        fetch(`${import.meta.env.VITE_API_URL}/users/role/${id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ role: newRole }),
@@ -52,7 +52,7 @@ function ManageUsers() {
             showCancelButton: true,
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:5000/users/${id}`, {
+                fetch(`${import.meta.env.VITE_API_URL}/users/${id}`, {
                     method: "DELETE",
                 })
                     .then((res) => res.json())

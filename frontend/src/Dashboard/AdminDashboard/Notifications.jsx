@@ -6,7 +6,7 @@ function Notifications() {
 
   // GET NOTIFICATIONS
   useEffect(() => {
-    fetch("http://localhost:5000/notifications")
+    fetch(`${import.meta.env.VITE_API_URL}/notifications`)
       .then((res) => res.json())
       .then((data) => {
         setNotifications(data);
@@ -21,7 +21,7 @@ function Notifications() {
   // MARK AS READ
   const markAsRead = async (id) => {
     try {
-      await fetch(`http://localhost:5000/notifications/${id}`, {
+      await fetch(`${import.meta.env.VITE_API_URL}/notifications/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

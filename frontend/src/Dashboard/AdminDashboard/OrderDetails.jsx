@@ -7,7 +7,7 @@ function OrderDetails() {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/payment-details/${trxId}`)
+        fetch(`${import.meta.env.VITE_API_URL}/payment-details/${trxId}`)
             .then(res => res.json())
             .then(data => {
                 console.log("Order Data:", data); // 🔍 debug

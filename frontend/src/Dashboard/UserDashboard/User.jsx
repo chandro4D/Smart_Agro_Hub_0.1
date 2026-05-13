@@ -20,7 +20,7 @@ const User = () => {
         if (!user?.email) return;
 
         // Fetch Cart Items
-        fetch(`http://localhost:5000/cart/${user.email}`)
+        fetch(`${import.meta.env.VITE_API_URL}/cart/${user.email}`)
             .then((res) => res.json())
             .then((data) => {
                 setStats((prev) => ({ ...prev, cartItems: data.length }));
@@ -36,7 +36,7 @@ const User = () => {
             .catch((err) => console.error(err));
 
         // Fetch Payment History
-        fetch(`http://localhost:5000/payment-history/${user.email}`)
+        fetch(`${import.meta.env.VITE_API_URL}/payment-history/${user.email}`)
             .then((res) => res.json())
             .then((data) => {
                 setStats((prev) => ({ ...prev, paymentHistory: data.length }));
@@ -52,13 +52,13 @@ const User = () => {
             .catch((err) => console.error(err));
 
         // Fetch Wishlist
-        fetch(`http://localhost:5000/wishlist/${user.email}`)
+        fetch(`${import.meta.env.VITE_API_URL}/wishlist/${user.email}`)
             .then((res) => res.json())
             .then((data) => setStats((prev) => ({ ...prev, wishlistItems: data.length })))
             .catch((err) => console.error(err));
 
         // Fetch Orders
-        fetch(`http://localhost:5000/orders/${user.email}`)
+        fetch(`${import.meta.env.VITE_API_URL}/orders/${user.email}`)
             .then((res) => res.json())
             .then((data) => setStats((prev) => ({ ...prev, orders: data.length })))
             .catch((err) => console.error(err));

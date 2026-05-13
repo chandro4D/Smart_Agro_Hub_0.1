@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 
 function ProductCard({ product }) {
-  const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5000" : "";
+  const BASE_URL = import.meta.env.VITE_API_URL;
 
   const userString = localStorage.getItem("user");
   const user = userString ? JSON.parse(userString) : null;

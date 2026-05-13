@@ -37,7 +37,7 @@ function ManageProducts() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:5000/allProducts");
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/allProducts`);
       const data = await res.json();
       setProducts(data);
     } catch (error) {
@@ -63,7 +63,7 @@ function ManageProducts() {
 
     if (confirm.isConfirmed) {
       try {
-        const res = await fetch(`http://localhost:5000/allProducts/${id}`, {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/allProducts/${id}`, {
           method: "DELETE",
         });
 
@@ -114,7 +114,7 @@ function ManageProducts() {
     try {
       setAdding(true);
 
-      const res = await fetch("http://localhost:5000/allProducts", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/allProducts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -164,7 +164,7 @@ function ManageProducts() {
       setAdding(true);
 
       const res = await fetch(
-        `http://localhost:5000/allProducts/${editingId}`,
+        `${import.meta.env.VITE_API_URL}/allProducts/${editingId}`,
         {
           method: "PATCH",
           headers: {

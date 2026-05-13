@@ -8,7 +8,7 @@ function Orders() {
 
   // Fetch orders
   useEffect(() => {
-    fetch("http://localhost:5000/all-payments")
+    fetch(`${import.meta.env.VITE_API_URL}/all-payments`)
       .then((res) => res.json())
       .then((data) => {
         setOrders(data);
@@ -19,7 +19,7 @@ function Orders() {
   // Handle status update
   const handleStatusChange = async (id, newStatus) => {
     const res = await fetch(
-      `http://localhost:5000/payments/status/${id}`,
+      `${import.meta.env.VITE_API_URL}/payments/status/${id}`,
       {
         method: "PATCH",
         headers: {

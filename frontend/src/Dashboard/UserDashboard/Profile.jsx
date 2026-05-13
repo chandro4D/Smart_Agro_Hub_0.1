@@ -34,7 +34,7 @@ const Profile = () => {
     setLoading(true);
 
     try {
-      await axios.patch(`http://localhost:5000/users/${user._id}`, formData);
+      await axios.patch(`${import.meta.env.VITE_API_URL}/users/${user._id}`, formData);
 
       const updatedUser = { ...user, ...formData };
       localStorage.setItem("user", JSON.stringify(updatedUser));
@@ -58,7 +58,7 @@ const Profile = () => {
 
     try {
       const res = await axios.patch(
-        `http://localhost:5000/change-password/${user._id}`,
+        `${import.meta.env.VITE_API_URL}/change-password/${user._id}`,
         passwordData,
       );
 

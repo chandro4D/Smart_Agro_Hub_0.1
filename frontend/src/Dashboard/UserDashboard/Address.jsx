@@ -18,7 +18,7 @@ const Address = () => {
   // Fetch
   const fetchAddresses = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/addresses/${userId}`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/addresses/${userId}`);
       setAddresses(res.data);
     } catch {
       Swal.fire("Error", "Failed to load addresses", "error");
@@ -40,10 +40,10 @@ const Address = () => {
 
     try {
       if (editingId) {
-        await axios.patch(`http://localhost:5000/addresses/${editingId}`, form);
+        await axios.patch(`${import.meta.env.VITE_API_URL}/addresses/${editingId}`, form);
         Swal.fire("Updated!", "Address updated successfully", "success");
       } else {
-        await axios.post("http://localhost:5000/addresses", {
+        await axios.post(`${import.meta.env.VITE_API_URL}/addresses`, {
           ...form,
           userId,
         });
@@ -78,7 +78,7 @@ const Address = () => {
     });
 
     if (confirm.isConfirmed) {
-      await axios.delete(`http://localhost:5000/addresses/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/addresses/${id}`);
       Swal.fire("Deleted!", "Address removed", "success");
       fetchAddresses();
     }

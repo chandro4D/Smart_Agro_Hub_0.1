@@ -7,11 +7,14 @@ const jwt = require("jsonwebtoken");
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
-app.use(express.json());
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(cors({
+  origin: "https://smart-agro-hub-0-1-floc.vercel.app",
+  credentials: true
+}));
 app.get("/", (req, res) => {
   res.send("Smart Agro Hub Server Running");
 });

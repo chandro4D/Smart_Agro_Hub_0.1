@@ -26,7 +26,7 @@ const Usercart = ({ user }) => {
             if (result.isConfirmed) {
                 try {
                     const res = await fetch(
-                        `http://localhost:5000/deleteCartItem/${user_id}/${product_id}`,
+                        `${import.meta.env.VITE_API_URL}/deleteCartItem/${user_id}/${product_id}`,
                         {
                             method: "DELETE",
                         }
