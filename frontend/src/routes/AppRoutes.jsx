@@ -58,10 +58,10 @@ const AppRoutes = () => {
 
       {/* PRODUCTS */}
       <Route path="/crop" element={<Crop />} />
-      <Route path="/machinery" element={<Machinery />} />
+      <Route path="/agri-machinery" element={<Machinery />} />
       <Route path="/poultry" element={<Poultry />} />
-      <Route path="/cat" element={<Cat />} />
-      <Route path="/veterinary" element={<Veterinary />} />
+      <Route path="/cat-items" element={<Cat />} />
+      <Route path="/veterinary-supplies-items" element={<Veterinary />} />
       <Route path="/cattle" element={<Cattle />} />
 
       {/* CART */}

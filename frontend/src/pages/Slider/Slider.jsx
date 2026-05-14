@@ -11,7 +11,7 @@ const Slider = () => {
         fetch("/slider.json")  
             .then((res) => res.json())
             .then((data) => setImage(data))
-            .then(data => console.log(data))
+            // .then(data => console.log(data))
             .catch((err) => console.error("Failed to load slider.json:", err));
     }, []);
 

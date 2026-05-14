@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const CategoryCard = () => {
     const [categories, setCategories] = useState([]);
-
     useEffect(() => {
+        console.log(import.meta.env.VITE_API_URL);
         fetch(`${import.meta.env.VITE_API_URL}/categories`)
             .then((res) => res.json())
             .then((data) => setCategories(data))
