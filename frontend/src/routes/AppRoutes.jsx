@@ -18,7 +18,6 @@ import Cattle from "../pages/IndividualProducts/Cattle.jsx";
 import Dashboard from "../Dashboard/DashboardRoute/Dashboard.jsx";
 import User from "../Dashboard/UserDashboard/User.jsx";
 import Usercart from "../Dashboard/UserDashboard/Usercart.jsx";
-import Seller from "../Dashboard/SellerDashboard/Seller.jsx";
 import PaymentHistory from "../Dashboard/UserDashboard/PaymentHistory.jsx";
 import Payment from "../Dashboard/UserDashboard/Payment.jsx";
 
@@ -39,6 +38,9 @@ import Profile from "../Dashboard/UserDashboard/Profile.jsx";
 import Support from "../Dashboard/UserDashboard/Support.jsx";
 import Address from "../Dashboard/UserDashboard/Address.jsx";
 
+// For Seller Dashboard
+import Seller from "../Dashboard/SellerDashboard/Seller.jsx";
+import ManageSellerProducts from "../Dashboard/SellerDashboard/ManageSellerProducts.jsx";
 
 
 const AppRoutes = () => {
@@ -94,6 +96,10 @@ const AppRoutes = () => {
         <Route path="notifications" element={<Notifications />} />
         <Route path="settings" element={<Settings />} />
         <Route path="order/:trxId" element={<OrderDetails />} />
+
+        {/* SELLER */}
+        <Route path="seller" element={<Seller />} />
+        <Route path="manageSellerProducts" element={<ManageSellerProducts />} />
       </Route>
 
     </Routes>

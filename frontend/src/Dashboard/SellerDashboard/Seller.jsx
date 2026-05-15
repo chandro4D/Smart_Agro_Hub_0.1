@@ -1,4 +1,5 @@
 import React from 'react'
+import { FaMoneyBillTrendUp, FaUsersLine, FaTruckMedical } from "react-icons/fa6";
 const Seller = () => {
     // const { user } = useContext(AuthContext);
     // const [analytics, setAnalytics] = useState([]);
@@ -33,7 +34,7 @@ const Seller = () => {
                 </div>
                 <div className="w-[220px] rounded-lg mr-4 h-[150px] bg-gradient-to-r from-cyan-500 to-blue-500">
                     <div className="flex  mt-10">
-                        <h3 className="text-4xl ml-10  mr-2 text-white"> <CgGift /></h3>
+                        <h3 className="text-4xl ml-10  mr-2 text-white"> {/* <CgGift /> */} </h3>
                         <h3 className=" text-xl text-white mt-1 font-semibold">
                             {/* {analytics.menuItems} */}
                         </h3>

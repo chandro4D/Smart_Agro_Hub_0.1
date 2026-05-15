@@ -41,10 +41,10 @@ function Notifications() {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">🔔 Notifications</h1>
+    <div className="">
+      <h1 className="text-3xl mt-[40px] font-bold mb-[50px] text-center ml-[200px]">🔔 Notifications</h1>
 
-      <div className="space-y-4">
+      <div className=" grid grid-cols-2 ml-[200px] gap-4">
         {notifications.length === 0 ? (
           <p>No notifications found</p>
         ) : (

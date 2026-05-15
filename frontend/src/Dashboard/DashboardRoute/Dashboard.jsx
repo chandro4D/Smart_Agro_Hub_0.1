@@ -1,7 +1,6 @@
 import React from "react";
 import Admin from "../AdminDashboard/AdminHome";
 import User from "../UserDashboard/User";
-import Seller from "../SellerDashboard/Seller";
 import Cart from "../../pages/Cart/Cart";
 import { NavLink, Outlet } from "react-router-dom";
 import {
@@ -16,7 +15,8 @@ import {
   FaWallet,
   FaUser,
   FaMapMarkerAlt,
-  FaHeadset
+  FaHeadset,
+  
 } from "react-icons/fa";
 import { MdOutlineManageAccounts, MdRestaurantMenu } from "react-icons/md";
 
@@ -114,13 +114,13 @@ function Dashboard() {
           {role === "Seller" && (
             <>
               <li>
-                <NavLink to="/seller">
+                <NavLink to="/dashboard/seller">
                   <FaHome></FaHome> Seller Home
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/dashboard/manageMedicine">
-                  <FaCartPlus></FaCartPlus> Manage Medicine
+                <NavLink to="/dashboard/manageSellerProducts">
+                  <FaCartPlus></FaCartPlus> Manage Products
                 </NavLink>
               </li>
               <li>
