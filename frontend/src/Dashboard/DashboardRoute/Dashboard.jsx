@@ -16,7 +16,6 @@ import {
   FaUser,
   FaMapMarkerAlt,
   FaHeadset,
-  
 } from "react-icons/fa";
 import { MdOutlineManageAccounts, MdRestaurantMenu } from "react-icons/md";
 
@@ -115,22 +114,43 @@ function Dashboard() {
             <>
               <li>
                 <NavLink to="/dashboard/seller">
-                  <FaHome></FaHome> Seller Home
+                  <FaHome /> Dashboard
                 </NavLink>
               </li>
+
               <li>
                 <NavLink to="/dashboard/manageSellerProducts">
-                  <FaCartPlus></FaCartPlus> Manage Products
+                  <FaBox /> My Products
                 </NavLink>
               </li>
+
+              <li>
+                <NavLink to="/dashboard/addProduct">
+                  <FaCartPlus /> Add Product
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/dashboard/sellerOrders">
+                  <FaList /> Orders
+                </NavLink>
+              </li>
+
               <li>
                 <NavLink to="/dashboard/sellerPaymentHistory">
-                  <FaCartPlus></FaCartPlus> Payment History
+                  <FaWallet /> Earnings
                 </NavLink>
               </li>
+
               <li>
                 <NavLink to="/dashboard/sellerAd">
-                  <FaCartPlus></FaCartPlus> Advertisement
+                  <FaEnvelope /> Advertisements
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/dashboard/sellerProfile">
+                  <FaUser /> Profile
                 </NavLink>
               </li>
             </>
