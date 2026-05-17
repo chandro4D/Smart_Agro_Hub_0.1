@@ -149,7 +149,7 @@ async function run() {
         res.status(500).send(error);
       }
     });
-    
+
     // GET SELLER PRODUCTS
     app.get("/seller-products/:email", async (req, res) => {
       try {
@@ -328,17 +328,29 @@ async function run() {
     // ADD PRODUCT
     app.post("/allProducts", async (req, res) => {
       try {
-        const product = req.body;
+        const product = {
+          ...req.body,
+          createdAt: new Date(),
+        };
+
         const result = await productsCollection.insertOne(product);
+
         await notificationsCollection.insertOne({
           message: `New product added: ${product.name}`,
           type: "product",
           createdAt: new Date(),
           read: false,
         });
-        res.send(result);
+
+        res.send({
+          success: true,
+          insertedId: result.insertedId,
+        });
       } catch (error) {
-        res.status(500).send(error);
+        res.status(500).send({
+          success: false,
+          message: "Failed to add product",
+        });
       }
     });
 
@@ -947,6 +959,8 @@ async function run() {
         });
       }
     });
+
+    
   } finally {
   }
 }
