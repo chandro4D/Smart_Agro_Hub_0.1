@@ -1,58 +1,189 @@
-import React from 'react'
-import { FaMoneyBillTrendUp, FaUsersLine, FaTruckMedical } from "react-icons/fa6";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+import {
+  FaMoneyBillTrendUp,
+  FaUsersLine,
+  FaTruckMedical,
+  FaBoxOpen,
+} from "react-icons/fa6";
+
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
 const Seller = () => {
-    // const { user } = useContext(AuthContext);
-    // const [analytics, setAnalytics] = useState([]);
-    // useEffect(() => {
-    //     fetch('https://medicine-selling-server.vercel.app/admin-stats')
-    //         .then(res => res.json())
-    //         .then(data => setAnalytics(data))
-    // },)
-    return (
-        <div>
-            <div><h1 className='text-center text-sky-500 text-4xl font-bold ml-32 pt-10 mb-10'>HI,WELCOME
-                {/* {user?.displayName ? user.displayName : 'BACK'} */}
-            </h1></div>
-            <div className="flex ml-[80px]">
-                <div className="w-[220px] rounded-lg mr-4 h-[150px] bg-gradient-to-r from-indigo-500  to-pink-500">
-                    <div className="flex mt-10">
-                        <h3 className="text-4xl ml-10  mr-2 text-white"> < FaMoneyBillTrendUp /></h3>
-                        <h3 className=" text-xl text-white mt-3 font-semibold">
-                            {/* {analytics.revenue} */}
-                            BDT</h3>
-                    </div>
-                    <h3 className="ml-10 text-3xl  text-white">Revenue</h3>
-                </div>
-                <div className="w-[220px] rounded-lg mr-4 h-[150px] bg-gradient-to-r from-indigo-500 from-10%  to-emerald-500 to-90%">
-                    <div className="flex  mt-10">
-                        <h3 className="text-4xl ml-10  mr-2 text-white"> <FaUsersLine /></h3>
-                        <h3 className=" text-xl text-white mt-1 font-semibold">
-                            {/* {analytics.users} */}
-                        </h3>
-                    </div>
-                    <h3 className="ml-10 text-3xl text-white">Customers</h3>
-                </div>
-                <div className="w-[220px] rounded-lg mr-4 h-[150px] bg-gradient-to-r from-cyan-500 to-blue-500">
-                    <div className="flex  mt-10">
-                        <h3 className="text-4xl ml-10  mr-2 text-white"> {/* <CgGift /> */} </h3>
-                        <h3 className=" text-xl text-white mt-1 font-semibold">
-                            {/* {analytics.menuItems} */}
-                        </h3>
-                    </div>
-                    <h3 className="ml-10 text-3xl text-white">Products</h3>
-                </div>
-                <div className="w-[220px] rounded-lg h-[150px] bg-gradient-to-r from-indigo-500 from-10%  to-emerald-500 to-90%">
-                    <div className="flex  mt-10">
-                        <h3 className="text-4xl ml-10  mr-2 text-white"> <FaTruckMedical /></h3>
-                        <h3 className=" text-xl text-white mt-1 font-semibold">
-                            {/* {analytics.orders} */}
-                        </h3>
-                    </div>
-                    <h3 className="ml-10 text-3xl text-white">Orders</h3>
-                </div>
+  const [stats, setStats] = useState({});
+  const [orders, setOrders] = useState([]);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/seller-stats/${user?.email}`)
+      .then((res) => setStats(res.data));
+
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/seller-orders/${user?.email}`)
+      .then((res) => setOrders(res.data));
+  }, []);
+
+  const chartData = [
+    {
+      name: "Products",
+      value: stats.totalProducts || 0,
+    },
+    {
+      name: "Orders",
+      value: stats.totalOrders || 0,
+    },
+    {
+      name: "Revenue",
+      value: stats.totalRevenue || 0,
+    },
+  ];
+
+  return (
+    <div className="p-6 bg-gray-100 min-h-screen">
+      {/* TOP HEADER */}
+
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-sky-600">
+          Welcome Back, {user?.name}
+        </h1>
+
+        <p className="text-gray-500 mt-2">Here is your business overview</p>
+      </div>
+
+      {/* STATS CARDS */}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Revenue */}
+
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-gray-500">Revenue</p>
+
+              <h2 className="text-3xl font-bold text-green-500">
+                ৳ {stats.totalRevenue || 0}
+              </h2>
             </div>
+
+            <FaMoneyBillTrendUp className="text-5xl text-green-400" />
+          </div>
         </div>
-    );
+
+        {/* Orders */}
+
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-gray-500">Orders</p>
+
+              <h2 className="text-3xl font-bold text-blue-500">
+                {stats.totalOrders || 0}
+              </h2>
+            </div>
+
+            <FaTruckMedical className="text-5xl text-blue-400" />
+          </div>
+        </div>
+
+        {/* Products */}
+
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-gray-500">Products</p>
+
+              <h2 className="text-3xl font-bold text-purple-500">
+                {stats.totalProducts || 0}
+              </h2>
+            </div>
+
+            <FaBoxOpen className="text-5xl text-purple-400" />
+          </div>
+        </div>
+
+        {/* Low Stock */}
+
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-gray-500">Low Stock</p>
+
+              <h2 className="text-3xl font-bold text-red-500">
+                {stats.lowStock || 0}
+              </h2>
+            </div>
+
+            <FaUsersLine className="text-5xl text-red-400" />
+          </div>
+        </div>
+      </div>
+
+      {/* CHART */}
+
+      <div className="bg-white rounded-2xl shadow-lg p-6 mt-10">
+        <h2 className="text-2xl font-bold mb-6">Business Overview</h2>
+
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={chartData}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="value" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* RECENT ORDERS */}
+
+      <div className="bg-white rounded-2xl shadow-lg p-6 mt-10">
+        <div className="flex justify-between items-center mb-5">
+          <h2 className="text-2xl font-bold">Recent Orders</h2>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="table w-full">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Transaction ID</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {orders.slice(0, 5).map((order, index) => (
+                <tr key={order._id}>
+                  <td>{index + 1}</td>
+
+                  <td>{order.transactionId}</td>
+
+                  <td>৳ {order.amount}</td>
+
+                  <td>
+                    <span className="badge badge-success">{order.status}</span>
+                  </td>
+
+                  <td>{new Date(order.date).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Seller;

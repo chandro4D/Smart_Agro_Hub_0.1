@@ -7,14 +7,15 @@ const jwt = require("jsonwebtoken");
 const app = express();
 const port = process.env.PORT || 5000;
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors({
-  origin: "https://smart-agro-hub-0-1-floc.vercel.app",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "https://smart-agro-hub-0-1-floc.vercel.app",
+    credentials: true,
+  }),
+);
 app.get("/", (req, res) => {
   res.send("Smart Agro Hub Server Running");
 });
@@ -146,6 +147,25 @@ async function run() {
         res.send(result);
       } catch (error) {
         res.status(500).send(error);
+      }
+    });
+    
+    // GET SELLER PRODUCTS
+    app.get("/seller-products/:email", async (req, res) => {
+      try {
+        const email = req.params.email;
+
+        const result = await productsCollection
+          .find({ sellerEmail: email })
+          .sort({ createdAt: -1 })
+          .toArray();
+
+        res.send(result);
+      } catch (error) {
+        res.status(500).send({
+          success: false,
+          message: "Failed to fetch seller products",
+        });
       }
     });
 
@@ -846,6 +866,86 @@ async function run() {
         _id: new ObjectId(req.params.id),
       });
       res.send(result);
+    });
+
+    // SELLER DASHBOARD STATS API
+    app.get("/seller-stats/:email", async (req, res) => {
+      try {
+        const email = req.params.email;
+
+        // Seller Products
+        const products = await productsCollection
+          .find({ sellerEmail: email })
+          .toArray();
+
+        const totalProducts = products.length;
+
+        // Product IDs
+        const productIds = products.map((p) => p._id.toString());
+
+        // Seller Payments
+        const payments = await allPaymentHistory.find().toArray();
+
+        let totalRevenue = 0;
+        let totalOrders = 0;
+
+        payments.forEach((payment) => {
+          const hasSellerProduct = payment.productIds?.some((id) =>
+            productIds.includes(id),
+          );
+
+          if (hasSellerProduct) {
+            totalRevenue += Number(payment.amount);
+            totalOrders += 1;
+          }
+        });
+
+        // LOW STOCK
+        const lowStockProducts = products.filter(
+          (product) => Number(product.stock) < 5,
+        );
+
+        res.send({
+          totalProducts,
+          totalRevenue,
+          totalOrders,
+          lowStock: lowStockProducts.length,
+        });
+      } catch (error) {
+        res.status(500).send({
+          success: false,
+          message: "Failed to load seller stats",
+        });
+      }
+    });
+
+    // SELLER RECENT ORDERS
+    app.get("/seller-orders/:email", async (req, res) => {
+      try {
+        const email = req.params.email;
+
+        const sellerProducts = await productsCollection
+          .find({ sellerEmail: email })
+          .toArray();
+
+        const sellerProductIds = sellerProducts.map((p) => p._id.toString());
+
+        const payments = await allPaymentHistory
+          .find()
+          .sort({ date: -1 })
+          .toArray();
+
+        const sellerOrders = payments.filter((payment) =>
+          payment.productIds?.some((id) => sellerProductIds.includes(id)),
+        );
+
+        res.send(sellerOrders);
+      } catch (error) {
+        res.status(500).send({
+          success: false,
+          message: "Failed to fetch seller orders",
+        });
+      }
     });
   } finally {
   }
