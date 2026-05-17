@@ -10,12 +10,34 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://smart-agro-hub-0-1-floc.vercel.app",
+];
 app.use(
   cors({
-    origin: "https://smart-agro-hub-0-1-floc.vercel.app",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
-  }),
+  })
 );
+
+
+
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:5173",
+//       "https://smart-agro-hub-0-1-floc.vercel.app",
+//     ],
+//     credentials: true,
+//   }),
+// );
 app.get("/", (req, res) => {
   res.send("Smart Agro Hub Server Running");
 });
@@ -959,8 +981,6 @@ async function run() {
         });
       }
     });
-
-    
   } finally {
   }
 }

@@ -1,13 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Swal from "sweetalert2";
 
-import {
-  FaEdit,
-  FaTrash,
-  FaSearch,
-  FaPlus,
-  FaBoxOpen,
-} from "react-icons/fa";
+import { FaEdit, FaTrash, FaSearch, FaPlus, FaBoxOpen } from "react-icons/fa";
 
 function ManageSellerProducts() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -19,6 +13,11 @@ function ManageSellerProducts() {
 
   // ADD MODAL
   const [showModal, setShowModal] = useState(false);
+
+  // EDIT MODAL
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const [editProductId, setEditProductId] = useState(null);
 
   const emptyForm = {
     name: "",
@@ -37,7 +36,7 @@ function ManageSellerProducts() {
       setLoading(true);
 
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/seller-products/${user?.email}`
+        `${import.meta.env.VITE_API_URL}/seller-products/${user?.email}`,
       );
 
       const data = await res.json();
@@ -79,11 +78,7 @@ function ManageSellerProducts() {
       !formData.price ||
       !formData.image
     ) {
-      return Swal.fire(
-        "Warning",
-        "Please fill all required fields",
-        "warning"
-      );
+      return Swal.fire("Warning", "Please fill all required fields", "warning");
     }
 
     try {
@@ -94,25 +89,18 @@ function ManageSellerProducts() {
         createdAt: new Date(),
       };
 
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/allProducts`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(productData),
-        }
-      );
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/allProducts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(productData),
+      });
 
       const data = await res.json();
 
       if (data.success || data.insertedId) {
-        Swal.fire(
-          "Success",
-          "Product added successfully",
-          "success"
-        );
+        Swal.fire("Success", "Product added successfully", "success");
 
         setShowModal(false);
 
@@ -141,17 +129,13 @@ function ManageSellerProducts() {
           `${import.meta.env.VITE_API_URL}/allProducts/${id}`,
           {
             method: "DELETE",
-          }
+          },
         );
 
         const data = await res.json();
 
         if (data.success) {
-          Swal.fire(
-            "Deleted!",
-            "Product deleted successfully",
-            "success"
-          );
+          Swal.fire("Deleted!", "Product deleted successfully", "success");
 
           fetchProducts();
         }
@@ -166,9 +150,57 @@ function ManageSellerProducts() {
     return products.filter(
       (product) =>
         product.name?.toLowerCase().includes(search.toLowerCase()) ||
-        product.category?.toLowerCase().includes(search.toLowerCase())
+        product.category?.toLowerCase().includes(search.toLowerCase()),
     );
   }, [products, search]);
+
+  // OPEN EDIT MODAL
+  const handleEditClick = (product) => {
+    setEditProductId(product._id);
+
+    setFormData({
+      name: product.name || "",
+      category: product.category || "",
+      price: product.price || "",
+      stock: product.stock || "",
+      image: product.image || "",
+      description: product.description || "",
+    });
+
+    setShowEditModal(true);
+  };
+
+  // UPDATE PRODUCT
+  const handleUpdateProduct = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/allProducts/${editProductId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        Swal.fire("Updated!", "Product updated successfully", "success");
+
+        setShowEditModal(false);
+
+        setFormData(emptyForm);
+
+        fetchProducts();
+      }
+    } catch (error) {
+      Swal.fire("Error", "Failed to update product", "error");
+    }
+  };
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -201,20 +233,14 @@ function ManageSellerProducts() {
         <div className="bg-white rounded-2xl shadow p-5">
           <p className="text-gray-500">Total Products</p>
 
-          <h2 className="text-3xl font-bold">
-            {products.length}
-          </h2>
+          <h2 className="text-3xl font-bold">{products.length}</h2>
         </div>
 
         <div className="bg-white rounded-2xl shadow p-5">
           <p className="text-gray-500">Low Stock</p>
 
           <h2 className="text-3xl font-bold text-red-500">
-            {
-              products.filter(
-                (item) => Number(item.stock) < 5
-              ).length
-            }
+            {products.filter((item) => Number(item.stock) < 5).length}
           </h2>
         </div>
 
@@ -245,13 +271,10 @@ function ManageSellerProducts() {
       {/* TABLE */}
       <div className="bg-white rounded-2xl shadow overflow-x-auto">
         {loading ? (
-          <div className="p-10 text-center text-gray-500">
-            Loading...
-          </div>
+          <div className="p-10 text-center text-gray-500">Loading...</div>
         ) : filteredProducts.length === 0 ? (
           <div className="p-10 text-center text-gray-500">
             <FaBoxOpen className="mx-auto text-5xl mb-3" />
-
             No Products Found
           </div>
         ) : (
@@ -282,13 +305,9 @@ function ManageSellerProducts() {
                     />
                   </td>
 
-                  <td className="p-3 font-medium">
-                    {product.name}
-                  </td>
+                  <td className="p-3 font-medium">{product.name}</td>
 
-                  <td className="p-3">
-                    {product.category}
-                  </td>
+                  <td className="p-3">{product.category}</td>
 
                   <td className="p-3 font-semibold text-green-600">
                     ৳ {product.price}
@@ -307,21 +326,20 @@ function ManageSellerProducts() {
                   </td>
 
                   <td className="p-3">
-                    {new Date(
-                      product.createdAt
-                    ).toLocaleDateString()}
+                    {new Date(product.createdAt).toLocaleDateString()}
                   </td>
 
                   <td className="p-3">
                     <div className="flex justify-center gap-2">
-                      <button className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg">
+                      <button
+                        onClick={() => handleEditClick(product)}
+                        className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg"
+                      >
                         <FaEdit />
                       </button>
 
                       <button
-                        onClick={() =>
-                          handleDelete(product._id)
-                        }
+                        onClick={() => handleDelete(product._id)}
                         className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg"
                       >
                         <FaTrash />
@@ -340,22 +358,14 @@ function ManageSellerProducts() {
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4">
           <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl p-6">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold">
-                Add Product
-              </h2>
+              <h2 className="text-2xl font-bold">Add Product</h2>
 
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-xl"
-              >
+              <button onClick={() => setShowModal(false)} className="text-xl">
                 ✕
               </button>
             </div>
 
-            <form
-              onSubmit={handleAddProduct}
-              className="space-y-4"
-            >
+            <form onSubmit={handleAddProduct} className="space-y-4">
               <input
                 type="text"
                 name="name"
@@ -426,9 +436,94 @@ function ManageSellerProducts() {
           </div>
         </div>
       )}
+      {/* EDIT PRODUCT MODAL */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4">
+          <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">Update Product</h2>
+
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="text-xl"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdateProduct} className="space-y-4">
+              <input
+                type="text"
+                name="name"
+                placeholder="Product Name"
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full border rounded-xl p-3 outline-none"
+                required
+              />
+
+              <div className="grid grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  name="category"
+                  placeholder="Category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  className="w-full border rounded-xl p-3 outline-none"
+                  required
+                />
+
+                <input
+                  type="number"
+                  name="stock"
+                  placeholder="Stock"
+                  value={formData.stock}
+                  onChange={handleChange}
+                  className="w-full border rounded-xl p-3 outline-none"
+                />
+              </div>
+
+              <input
+                type="number"
+                name="price"
+                placeholder="Price"
+                value={formData.price}
+                onChange={handleChange}
+                className="w-full border rounded-xl p-3 outline-none"
+                required
+              />
+
+              <input
+                type="text"
+                name="image"
+                placeholder="Image URL"
+                value={formData.image}
+                onChange={handleChange}
+                className="w-full border rounded-xl p-3 outline-none"
+                required
+              />
+
+              <textarea
+                name="description"
+                placeholder="Description"
+                rows="4"
+                value={formData.description}
+                onChange={handleChange}
+                className="w-full border rounded-xl p-3 outline-none"
+              />
+
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl"
+              >
+                Update Product
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default ManageSellerProducts;
-
