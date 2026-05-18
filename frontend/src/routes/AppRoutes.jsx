@@ -41,7 +41,7 @@ import Address from "../Dashboard/UserDashboard/Address.jsx";
 // For Seller Dashboard
 import Seller from "../Dashboard/SellerDashboard/Seller.jsx";
 import ManageSellerProducts from "../Dashboard/SellerDashboard/ManageSellerProducts.jsx";
-
+import AddProduct from "../Dashboard/SellerDashboard/AddProduct.jsx";
 
 const AppRoutes = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -100,6 +100,7 @@ const AppRoutes = () => {
         {/* SELLER */}
         <Route path="seller" element={<Seller />} />
         <Route path="manageSellerProducts" element={<ManageSellerProducts />} />
+        <Route path="addProduct" element={<AddProduct />} />
       </Route>
 
     </Routes>

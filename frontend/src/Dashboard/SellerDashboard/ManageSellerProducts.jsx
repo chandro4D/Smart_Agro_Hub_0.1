@@ -203,7 +203,7 @@ function ManageSellerProducts() {
   };
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="p-6 bg-gray-50 min-h-screen w-[1250px]">
       {/* HEADER */}
       <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
         <div>
