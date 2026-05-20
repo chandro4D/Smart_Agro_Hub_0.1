@@ -43,6 +43,7 @@ import Seller from "../Dashboard/SellerDashboard/Seller.jsx";
 import ManageSellerProducts from "../Dashboard/SellerDashboard/ManageSellerProducts.jsx";
 import AddProduct from "../Dashboard/SellerDashboard/AddProduct.jsx";
 import SellerOrders from "../Dashboard/SellerDashboard/SellerOrders.jsx";
+import SellerPaymentHistory from "../Dashboard/SellerDashboard/SellerPaymentHistory.jsx";
 
 
 const AppRoutes = () => {
@@ -104,6 +105,7 @@ const AppRoutes = () => {
         <Route path="manageSellerProducts" element={<ManageSellerProducts />} />
         <Route path="addProduct" element={<AddProduct />} />
         <Route path="sellerOrders" element={<SellerOrders />} />
+        <Route path="sellerPaymentHistory" element={<SellerPaymentHistory />} />
       </Route>
 
     </Routes>
